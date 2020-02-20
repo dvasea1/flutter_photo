@@ -146,7 +146,7 @@ class _PhotoMainPageState extends State<PhotoMainPage>
             ],
           ),
           body: _buildBody(),
-          bottomNavigationBar: _BottomWidget(
+         /* bottomNavigationBar: _BottomWidget(
             key: scaffoldKey,
             provider: i18nProvider,
             options: options,
@@ -155,7 +155,7 @@ class _PhotoMainPageState extends State<PhotoMainPage>
             onTapPreview: selectedList.isEmpty ? null : _onTapPreview,
             selectedProvider: this,
             galleryListProvider: this,
-          ),
+          ),*/
         ),
       ),
     );
@@ -285,9 +285,10 @@ class _PhotoMainPageState extends State<PhotoMainPage>
     }
 
     var data = list[index];
+    var currentSelected = containsEntity(data);
     return RepaintBoundary(
       child: GestureDetector(
-        onTap: () => _onItemClick(data, index),
+        onTap: () =>  changeCheck(!currentSelected, data),//,(data, index),
         child: Stack(
           children: <Widget>[
             ImageItem(
