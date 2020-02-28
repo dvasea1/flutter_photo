@@ -14,7 +14,7 @@ dependencies:
   photo_manager:
     git:
       url: https://github.com/CaiJingLong/flutter_photo_manager.git
-      ref: 30b8b79fb44ee403e5a8e1c30aad5fe1c00581a3
+      #ref: 43dd81ee5cb49c6b7106555cffcf2e9e66e7629a
   # photo_manager:
   #   git:
   #     url: https://github.com/CaiJingLong/flutter_photo_manager.git

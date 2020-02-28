@@ -113,11 +113,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "30b8b79fb44ee403e5a8e1c30aad5fe1c00581a3"
-      resolved-ref: "30b8b79fb44ee403e5a8e1c30aad5fe1c00581a3"
+      ref: HEAD
+      resolved-ref: daeda02b85c80e758c2887cc1a008de29227b3cc
       url: "https://github.com/CaiJingLong/flutter_photo_manager.git"
     source: git
-    version: "0.4.8"
+    version: "0.5.0-dev.1"
   quiver:
     dependency: transitive
     description:
