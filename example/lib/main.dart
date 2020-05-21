@@ -144,7 +144,7 @@ class _MyHomePageState extends State<MyHomePage> with LoadingDelegate {
       maxSelected: 8,
       // max picker image count
       // provider: I18nProvider.english,
-      provider: I18nProvider.chinese,
+      provider: I18nProvider.english,
       // i18n provider ,default is chinese. , you can custom I18nProvider or use ENProvider()
       rowCount: 3,
       // item row count

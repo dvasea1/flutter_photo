@@ -17,6 +17,7 @@ import 'package:photo/src/ui/page/photo_preview_page.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 part './main/bottom_widget.dart';
+
 part './main/image_item.dart';
 
 class PhotoMainPage extends StatefulWidget {
@@ -40,6 +41,7 @@ class _PhotoMainPageState extends State<PhotoMainPage>
   Options get options => widget.options;
 
   I18nProvider get i18nProvider => PhotoPickerProvider.of(context).provider;
+
   AssetProvider get assetProvider =>
       PhotoPickerProvider.of(context).assetProvider;
 
@@ -111,7 +113,7 @@ class _PhotoMainPageState extends State<PhotoMainPage>
   Widget build(BuildContext context) {
     var textStyle = TextStyle(
       color: options.textColor,
-      fontSize: 14.0,
+      fontSize: 17.7,
     );
     return Theme(
       data: Theme.of(context).copyWith(primaryColor: options.themeColor),
@@ -119,20 +121,90 @@ class _PhotoMainPageState extends State<PhotoMainPage>
         style: textStyle,
         child: Scaffold(
           appBar: AppBar(
-            leading: IconButton(
+            titleSpacing: 0,
+            automaticallyImplyLeading: false,
+            /*   leading: IconButton(
               icon: Icon(
                 Icons.close,
                 color: options.textColor,
               ),
               onPressed: _cancel,
-            ),
-            title: Text(
-              i18nProvider.getTitleText(options),
-              style: TextStyle(
-                color: options.textColor,
+            ),*/
+            title: Container(
+              width: double.infinity,
+              child: Stack(
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      InkWell(
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 15),
+                          child: Center(
+                            child: Icon(
+                              Icons.close,
+                              color: options.textColor,
+                            ),
+                          ),
+                          // onPressed: _cancel,
+                        ),
+                        onTap: _cancel,
+                      ),
+                    ],
+                  ),
+                  Center(
+                    child: Text(
+                      i18nProvider.getTitleText(options),
+                      style: TextStyle(
+                        color: options.textColor,
+                        fontSize: 17.7,
+                      ),
+                    ),
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      InkWell(
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 15),
+                          child: Center(
+                            child: Text(
+                              i18nProvider.getSureText(options, selectedCount),
+                              style: selectedCount == 0
+                                  ? textStyle.copyWith(
+                                      color: options.disableColor)
+                                  : textStyle,
+                            ),
+                          ),
+                        ),
+                        onTap: selectedCount == 0 ? null : sure,
+                      )
+                      /*FlatButton(
+              splashColor: Colors.transparent,
+              child: Text(
+                i18nProvider.getSureText(options, selectedCount),
+                style: selectedCount == 0
+                    ? textStyle.copyWith(color: options.disableColor)
+                    : textStyle,
               ),
-            ),
-            actions: <Widget>[
+              onPressed: selectedCount == 0 ? null : sure,
+            )*/
+                    ],
+                  )
+                ],
+              ),
+              height: 56,
+            ) /*Center(
+              child: Text(
+                i18nProvider.getTitleText(options),
+                style: TextStyle(
+                  color: options.textColor,
+                  fontSize: 17.7,
+                ),
+              ),
+            )*/
+            ,
+            /*actions: <Widget>[
               FlatButton(
                 splashColor: Colors.transparent,
                 child: Text(
@@ -143,10 +215,10 @@ class _PhotoMainPageState extends State<PhotoMainPage>
                 ),
                 onPressed: selectedCount == 0 ? null : sure,
               ),
-            ],
+            ],*/
           ),
           body: _buildBody(),
-         /* bottomNavigationBar: _BottomWidget(
+          /* bottomNavigationBar: _BottomWidget(
             key: scaffoldKey,
             provider: i18nProvider,
             options: options,
@@ -288,7 +360,7 @@ class _PhotoMainPageState extends State<PhotoMainPage>
     var currentSelected = containsEntity(data);
     return RepaintBoundary(
       child: GestureDetector(
-        onTap: () =>  changeCheck(!currentSelected, data),//,(data, index),
+        onTap: () => changeCheck(!currentSelected, data), //,(data, index),
         child: Stack(
           children: <Widget>[
             ImageItem(
