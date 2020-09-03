@@ -63,7 +63,7 @@ class __BottomWidgetState extends State<_BottomWidget> {
               Expanded(
                 child: Container(),
               ),
-              FlatButton(
+           /*   FlatButton(
                 onPressed: widget.onTapPreview,
                 textColor: options.textColor,
                 splashColor: Colors.transparent,
@@ -78,7 +78,7 @@ class __BottomWidgetState extends State<_BottomWidget> {
                   ),
                   padding: textPadding,
                 ),
-              ),
+              ),*/
             ],
           ),
         ),
