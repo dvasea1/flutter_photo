@@ -218,7 +218,7 @@ class _PhotoMainPageState extends State<PhotoMainPage>
             ],*/
           ),
           body: _buildBody(),
-          /* bottomNavigationBar: _BottomWidget(
+         bottomNavigationBar: _BottomWidget(
             key: scaffoldKey,
             provider: i18nProvider,
             options: options,
@@ -227,7 +227,7 @@ class _PhotoMainPageState extends State<PhotoMainPage>
             onTapPreview: selectedList.isEmpty ? null : _onTapPreview,
             selectedProvider: this,
             galleryListProvider: this,
-          ),*/
+          ),
         ),
       ),
     );
