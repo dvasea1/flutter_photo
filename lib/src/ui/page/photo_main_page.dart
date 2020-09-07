@@ -52,6 +52,7 @@ class _PhotoMainPageState extends State<PhotoMainPage>
   AssetPathEntity _currentPath;
 
   bool _isInit = false;
+  bool _GalleryListShown = false;
 
   AssetPathEntity get currentPath {
     if (_currentPath == null) {
@@ -152,33 +153,66 @@ class _PhotoMainPageState extends State<PhotoMainPage>
                     ],
                   ),
                   Center(
-                    child: Text(
-                      i18nProvider.getTitleText(options),
-                      style: TextStyle(
-                        color: options.textColor,
-                        fontSize: 17.7,
-                      ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          currentGalleryName,
+                          style: TextStyle(
+                            color: options.textColor,
+                            fontSize: 14,
+                          ),
+                        ),
+                        InkWell(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Text(
+                                'Click here to modify',
+                                style: TextStyle(
+                                  color: options.textColor,
+                                  fontSize: 11,
+                                ),
+                              ),
+                              Icon(Icons.arrow_drop_down, color: Colors.white,)
+                            ],
+                          ),
+                          onTap: () {
+                            _GalleryListShown = true;
+                            setState(() {});
+                          },
+                        )
+                      ],
                     ),
                   ),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
-                      InkWell(
-                        child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 15),
-                          child: Center(
-                            child: Text(
-                              i18nProvider.getSureText(options, selectedCount),
-                              style: selectedCount == 0
-                                  ? textStyle.copyWith(
-                                      color: options.disableColor)
-                                  : textStyle,
-                            ),
-                          ),
-                        ),
-                        onTap: selectedCount == 0 ? null : sure,
-                      )
+                      selectedCount == 0
+                          ? Container(
+                              height: double.infinity,
+                              padding: EdgeInsets.symmetric(horizontal: 15),
+                              child: Icon(Icons.camera_alt, color: Colors.black45,),
+                            )
+                          : InkWell(
+                              child: Container(
+                                padding: EdgeInsets.symmetric(horizontal: 15),
+                                child: Center(
+                                  child: Text(
+                                    i18nProvider.getSureText(
+                                        options, selectedCount),
+                                    style: selectedCount == 0
+                                        ? textStyle.copyWith(
+                                            color: options.disableColor)
+                                        : textStyle,
+                                  ),
+                                ),
+                              ),
+                              onTap: selectedCount == 0 ? null : sure,
+                            )
                       /*FlatButton(
               splashColor: Colors.transparent,
               child: Text(
@@ -218,7 +252,7 @@ class _PhotoMainPageState extends State<PhotoMainPage>
             ],*/
           ),
           body: _buildBody(),
-         bottomNavigationBar: _BottomWidget(
+          /*  bottomNavigationBar: _BottomWidget(
             key: scaffoldKey,
             provider: i18nProvider,
             options: options,
@@ -227,7 +261,7 @@ class _PhotoMainPageState extends State<PhotoMainPage>
             onTapPreview: selectedList.isEmpty ? null : _onTapPreview,
             selectedProvider: this,
             galleryListProvider: this,
-          ),
+          ),*/
         ),
       ),
     );
@@ -286,13 +320,13 @@ class _PhotoMainPageState extends State<PhotoMainPage>
     List<AssetPathEntity> pathList;
     switch (options.pickType) {
       case PickType.onlyImage:
-        pathList = await PhotoManager.getImageAsset();
+        pathList = await PhotoManager.getAssetPathList(type: RequestType.image);
         break;
       case PickType.onlyVideo:
-        pathList = await PhotoManager.getVideoAsset();
+        pathList = await PhotoManager.getAssetPathList(type: RequestType.video);
         break;
       default:
-        pathList = await PhotoManager.getAssetPathList();
+        pathList = await PhotoManager.getAssetPathList(type: RequestType.image);
     }
 
     _onRefreshAssetPathList(pathList);
@@ -333,19 +367,31 @@ class _PhotoMainPageState extends State<PhotoMainPage>
 
     final count = assetProvider.count + (noMore ? 0 : 1);
 
-    return Container(
-      color: options.dividerColor,
-      child: GridView.builder(
-        controller: scrollController,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: options.rowCount,
-          childAspectRatio: options.itemRadio,
-          crossAxisSpacing: options.padding,
-          mainAxisSpacing: options.padding,
+    return Stack(
+      children: <Widget>[
+        Container(
+          color: options.dividerColor,
+          child: GridView.builder(
+            controller: scrollController,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: options.rowCount,
+              childAspectRatio: options.itemRadio,
+              crossAxisSpacing: options.padding,
+              mainAxisSpacing: options.padding,
+            ),
+            itemBuilder: _buildItem,
+            itemCount: count,
+          ),
         ),
-        itemBuilder: _buildItem,
-        itemCount: count,
-      ),
+        _GalleryListShown
+            ? ChangeGalleryDialog(
+                galleryList: this.galleryPathList,
+                i18n: i18nProvider,
+                options: options,
+                onGalleryChange: _onGalleryChange,
+              )
+            : Container()
+      ],
     );
   }
 
@@ -451,8 +497,11 @@ class _PhotoMainPageState extends State<PhotoMainPage>
   }
 
   void _onGalleryChange(AssetPathEntity assetPathEntity) async {
-    // _currentPath = assetPathEntity;
+    _currentPath = assetPathEntity;
+    debugPrint("path ${assetPathEntity.name}");
 
+    _GalleryListShown = false;
+    setState(() {});
     // _currentPath.assetList.then((v) async {
     //   _sortAssetList(v);
     //   list.clear();
@@ -575,10 +624,10 @@ class _PhotoMainPageState extends State<PhotoMainPage>
     List<AssetPathEntity> pathList;
     switch (options.pickType) {
       case PickType.onlyImage:
-        pathList = await PhotoManager.getImageAsset();
+        pathList = await PhotoManager.getAssetPathList(type: RequestType.image);
         break;
       case PickType.onlyVideo:
-        pathList = await PhotoManager.getVideoAsset();
+        pathList = await PhotoManager.getAssetPathList(type: RequestType.video);
         break;
       default:
         pathList = await PhotoManager.getAssetPathList();
