@@ -152,10 +152,11 @@ class _PhotoMainPageState extends State<PhotoMainPage>
                       ),
                     ],
                   ),
-                  Center(
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 50),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Text(
                           currentGalleryName,
@@ -164,26 +165,33 @@ class _PhotoMainPageState extends State<PhotoMainPage>
                             fontSize: 14,
                           ),
                         ),
-                        InkWell(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Text(
-                                'Click here to modify',
-                                style: TextStyle(
-                                  color: options.textColor,
-                                  fontSize: 11,
-                                ),
+                        Container(
+                          child: InkWell(
+                            child: Container(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Text(
+                                    i18nProvider.getSubTitleText(),
+                                    style: TextStyle(
+                                      color: options.textColor,
+                                      fontSize: 11,
+                                    ),
+                                  ),
+                                  Icon(
+                                    Icons.arrow_drop_down,
+                                    color: Colors.white,
+                                  )
+                                ],
                               ),
-                              Icon(Icons.arrow_drop_down, color: Colors.white,)
-                            ],
+                            ),
+                            onTap: () {
+                              _GalleryListShown = true;
+                              setState(() {});
+                            },
                           ),
-                          onTap: () {
-                            _GalleryListShown = true;
-                            setState(() {});
-                          },
-                        )
+
+                        ),
                       ],
                     ),
                   ),
@@ -191,28 +199,21 @@ class _PhotoMainPageState extends State<PhotoMainPage>
                     crossAxisAlignment: CrossAxisAlignment.end,
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
-                      selectedCount == 0
-                          ? Container(
-                              height: double.infinity,
-                              padding: EdgeInsets.symmetric(horizontal: 15),
-                              child: Icon(Icons.camera_alt, color: Colors.black45,),
-                            )
-                          : InkWell(
-                              child: Container(
-                                padding: EdgeInsets.symmetric(horizontal: 15),
-                                child: Center(
-                                  child: Text(
-                                    i18nProvider.getSureText(
-                                        options, selectedCount),
-                                    style: selectedCount == 0
-                                        ? textStyle.copyWith(
-                                            color: options.disableColor)
-                                        : textStyle,
-                                  ),
-                                ),
-                              ),
-                              onTap: selectedCount == 0 ? null : sure,
-                            )
+                      InkWell(
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 15),
+                          child: Center(
+                            child: Text(
+                              i18nProvider.getSureText(options, selectedCount),
+                              style: selectedCount == 0
+                                  ? textStyle.copyWith(
+                                      color: options.disableColor)
+                                  : textStyle,
+                            ),
+                          ),
+                        ),
+                        onTap: selectedCount == 0 ? null : sure,
+                      )
                       /*FlatButton(
               splashColor: Colors.transparent,
               child: Text(

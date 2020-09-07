@@ -25,6 +25,10 @@ abstract class I18nProvider {
   static const I18nProvider chinese = CNProvider();
 
   static const I18nProvider english = ENProvider();
+
+  String  getSubTitleText() {
+    return "";
+  }
 }
 
 class CNProvider extends I18nProvider {
