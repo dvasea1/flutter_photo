@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 class AssetProvider {
@@ -47,12 +48,17 @@ class AssetPaging {
   AssetPaging(this.path, {this.pageCount = 50});
 
   Future<void> loadMore() async {
+    debugPrint("page $page");
     if (noMore == true) {
       return;
     }
     var data = await path.getAssetListPaged(page, pageCount);
-    if (data.length == 0) {
+    debugPrint("data length ${data.length}");
+    if (data.length < pageCount) {
       noMore = true;
+    }
+    if (page == 0) {
+      this.data.clear();
     }
     page++;
     this.data.addAll(data);

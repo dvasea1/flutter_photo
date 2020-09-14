@@ -269,6 +269,7 @@ class _PhotoPreviewPageState extends State<PhotoPreviewPage> {
   Widget _buildItem(BuildContext context, int index) {
     if (!widget.isPreview && index >= list.length - 5) {
       _loadMore();
+      debugPrint("_buildItem");
     }
 
     var data = list[index];

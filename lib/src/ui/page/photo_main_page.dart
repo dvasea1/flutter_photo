@@ -190,7 +190,6 @@ class _PhotoMainPageState extends State<PhotoMainPage>
                               setState(() {});
                             },
                           ),
-
                         ),
                       ],
                     ),
@@ -345,6 +344,7 @@ class _PhotoMainPageState extends State<PhotoMainPage>
 
     if (pathList.isNotEmpty) {
       assetProvider.current = pathList[0];
+      debugPrint("load more _onrefresh");
       await assetProvider.loadMore();
     }
 
@@ -399,6 +399,7 @@ class _PhotoMainPageState extends State<PhotoMainPage>
   Widget _buildItem(BuildContext context, int index) {
     final noMore = assetProvider.noMore;
     if (!noMore && index == assetProvider.count) {
+      debugPrint("build item");
       _loadMore();
       return _buildLoading();
     }
@@ -505,16 +506,23 @@ class _PhotoMainPageState extends State<PhotoMainPage>
     setState(() {});
     // _currentPath.assetList.then((v) async {
     //   _sortAssetList(v);
-    //   list.clear();
+    //  list.clear();
     //   list.addAll(v);
     //   scrollController.jumpTo(0.0);
     //   await checkPickImageEntity();
     //   setState(() {});
     // });
+    // assetProvider.data.clear();
     if (assetPathEntity != assetProvider.current) {
       assetProvider.current = assetPathEntity;
-      await assetProvider.loadMore();
+      // await assetProvider.loadMore();
+      // scrollController.jumpTo(0.0);
+      //list.clear();
+      // list.addAll(assetProvider.data);
+      debugPrint("assetProvider.data ${assetProvider.data.length}");
       setState(() {});
+
+      // _onPhotoRefresh();
     }
   }
 
