@@ -175,7 +175,7 @@ class _PhotoMainPageState extends State<PhotoMainPage>
                                     i18nProvider.getSubTitleText(),
                                     style: TextStyle(
                                       color: options.textColor,
-                                      fontSize: 11,
+                                      fontSize: 12,
                                     ),
                                   ),
                                   Icon(
