@@ -29,6 +29,13 @@ abstract class I18nProvider {
   String  getSubTitleText() {
     return "";
   }
+
+  String  getNoPhotosSelectiveText() {
+    return "Manage the photos and videos";
+  }
+  String  getOpenSettingsText() {
+    return "Manage";
+  }
 }
 
 class CNProvider extends I18nProvider {

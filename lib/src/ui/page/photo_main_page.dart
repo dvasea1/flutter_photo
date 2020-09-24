@@ -186,8 +186,10 @@ class _PhotoMainPageState extends State<PhotoMainPage>
                               ),
                             ),
                             onTap: () {
-                              _GalleryListShown = true;
-                              setState(() {});
+                              if ((assetProvider.getPaging() != null)) {
+                                _GalleryListShown = true;
+                                setState(() {});
+                              }
                             },
                           ),
                         ),
@@ -370,20 +372,22 @@ class _PhotoMainPageState extends State<PhotoMainPage>
 
     return Stack(
       children: <Widget>[
-        Container(
-          color: options.dividerColor,
-          child: GridView.builder(
-            controller: scrollController,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: options.rowCount,
-              childAspectRatio: options.itemRadio,
-              crossAxisSpacing: options.padding,
-              mainAxisSpacing: options.padding,
-            ),
-            itemBuilder: _buildItem,
-            itemCount: count,
-          ),
-        ),
+        (assetProvider.getPaging() != null)
+            ? Container(
+                color: options.dividerColor,
+                child: GridView.builder(
+                  controller: scrollController,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: options.rowCount,
+                    childAspectRatio: options.itemRadio,
+                    crossAxisSpacing: options.padding,
+                    mainAxisSpacing: options.padding,
+                  ),
+                  itemBuilder: _buildItem,
+                  itemCount: count,
+                ),
+              )
+            : _buildNoData(),
         _GalleryListShown
             ? ChangeGalleryDialog(
                 galleryList: this.galleryPathList,
@@ -398,10 +402,16 @@ class _PhotoMainPageState extends State<PhotoMainPage>
 
   Widget _buildItem(BuildContext context, int index) {
     final noMore = assetProvider.noMore;
-    if (!noMore && index == assetProvider.count) {
-      debugPrint("build item");
-      _loadMore();
-      return _buildLoading();
+
+    debugPrint("assetProvider.count ${assetProvider.count}  noMore $noMore");
+    if (assetProvider.getPaging() != null) {
+      if (!noMore && index == assetProvider.count) {
+        debugPrint("build item");
+        _loadMore();
+        return _buildLoading();
+      }
+    } else {
+      return _buildNoData();
     }
 
     var data = list[index];
@@ -619,6 +629,48 @@ class _PhotoMainPageState extends State<PhotoMainPage>
         ],
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
+      ),
+    );
+  }
+
+  Widget _buildNoData() {
+    return Container(
+      width: double.infinity,
+      height: double.infinity,
+      child: Center(
+        child: Column(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                i18nProvider.getNoPhotosSelectiveText(),
+                style: const TextStyle(
+                  fontSize: 13.0,
+                ),
+              ),
+            ),
+            InkWell(
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 7),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black12),
+                ),
+                height: 20,
+                child: Text(
+                  i18nProvider.getOpenSettingsText(),
+                  style: const TextStyle(
+                    fontSize: 13.0,
+                  ),
+                ),
+              ),
+              onTap: () {
+                PhotoManager.openSetting();
+              },
+            )
+          ],
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+        ),
       ),
     );
   }

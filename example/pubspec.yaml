@@ -23,7 +23,7 @@ dependencies:
   photo:
     path: ../
 
-  oktoast: ^2.0.0
+  oktoast: ^2.3.2
 
 dev_dependencies:
   flutter_test:
