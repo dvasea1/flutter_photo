@@ -40,6 +40,9 @@ class Options {
   final Widget cancelWidget;
 
   final Widget subtitleWidgetArrow;
+  final Widget managePhotosWidget;
+
+  final bool showManagePhotos;
 
   const Options({
     this.rowCount,
@@ -59,7 +62,9 @@ class Options {
     this.cancelWidget,
     this.textSubtitleColor,
     this.subtitleWidgetArrow,
-    this.enabledColor
+    this.enabledColor,
+    this.showManagePhotos,
+    this.managePhotosWidget
   });
 }
 

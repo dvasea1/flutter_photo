@@ -77,6 +77,7 @@ class PhotoPickerCallback {
       int thumbSize = 64,
       I18nProvider provider = I18nProvider.english,
       SortDelegate sortDelegate,
+      bool showManagePhotos = false,
       CheckBoxBuilderDelegate checkBoxBuilderDelegate,
       LoadingDelegate loadingDelegate,
       PickType pickType = PickType.all,
@@ -85,7 +86,8 @@ class PhotoPickerCallback {
       List<AssetEntity> pickedAssetList,
       Widget cancelWidget,
       Function onAssetsSelected,
-      Widget subtitleWidgetArrow}) {
+      Widget subtitleWidgetArrow,
+      Widget managePhotosWidget}) {
     assert(provider != null, "provider must be not null");
     assert(context != null, "context must be not null");
     assert(pickType != null, "pickType must be not null");
@@ -118,7 +120,9 @@ class PhotoPickerCallback {
         cancelWidget: cancelWidget,
         textSubtitleColor: textSubtitleColor,
         subtitleWidgetArrow: subtitleWidgetArrow,
-        enabledColor: enabledColor);
+        enabledColor: enabledColor,
+        showManagePhotos: showManagePhotos,
+        managePhotosWidget: managePhotosWidget);
 
     PhotoPickerCallback()._pickAsset(context, options, provider, photoPathList,
         pickedAssetList, onAssetsSelected);

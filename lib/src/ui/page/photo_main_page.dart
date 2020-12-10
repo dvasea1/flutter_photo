@@ -419,6 +419,43 @@ class _PhotoMainPageState extends State<PhotoMainPage>
                 options: options,
                 onGalleryChange: _onGalleryChange,
               )
+            : Container(),
+        options.showManagePhotos
+            ? Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.only(bottom: 20),
+                        child: InkWell(
+                          child: options.managePhotosWidget == null
+                              ? Container(
+                                  color: Colors.blue,
+                                  padding: EdgeInsets.symmetric(horizontal: 7),
+                                  height: 50,
+                                  child: Center(
+                                    child: Text(
+                                      i18nProvider.getOpenSettingsText(),
+                                      style: const TextStyle(
+                                        fontSize: 13.0,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : options.managePhotosWidget,
+                          onTap: () {
+                            PhotoManager.openSetting();
+                          },
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              )
             : Container()
       ],
     );
@@ -427,10 +464,10 @@ class _PhotoMainPageState extends State<PhotoMainPage>
   Widget _buildItem(BuildContext context, int index) {
     final noMore = assetProvider.noMore;
 
-    debugPrint("assetProvider.count ${assetProvider.count}  noMore $noMore");
+    // debugPrint("assetProvider.count ${assetProvider.count}  noMore $noMore");
     if (assetProvider.getPaging() != null) {
       if (!noMore && index == assetProvider.count) {
-        debugPrint("build item");
+        //  debugPrint("build item");
         _loadMore();
         return _buildLoading();
       }
@@ -678,24 +715,6 @@ class _PhotoMainPageState extends State<PhotoMainPage>
                 ),
               ),
             ),
-            InkWell(
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 7),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black12),
-                ),
-                height: 20,
-                child: Text(
-                  i18nProvider.getOpenSettingsText(),
-                  style: const TextStyle(
-                    fontSize: 13.0,
-                  ),
-                ),
-              ),
-              onTap: () {
-                PhotoManager.openSetting();
-              },
-            )
           ],
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,

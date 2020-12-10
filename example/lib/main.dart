@@ -170,6 +170,8 @@ class _MyHomePageState extends State<MyHomePage> with LoadingDelegate {
       pickType: type,
 
       photoPathList: pathList,
+      managePhotosWidget: Container(width: 20,height: 20,color: Colors.red,),
+      showManagePhotos: true,
 
       onAssetsSelected: (List<AssetEntity> imgList ) async {
         if (imgList == null || imgList.isEmpty) {
