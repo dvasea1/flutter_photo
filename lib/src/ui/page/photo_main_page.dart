@@ -500,15 +500,20 @@ class _PhotoMainPageState extends State<PhotoMainPage>
         textAlign: TextAlign.center,
         style: TextStyle(
           fontSize: 12.0,
-          color: options.textColor,
+          color: Colors.white,
         ),
       );
-      decoration = BoxDecoration(color: themeColor);
+      decoration = BoxDecoration(
+          borderRadius: BorderRadius.circular(1.0),
+          border: Border.all(
+            color: Colors.white,
+          ),
+          color: themeColor);
     } else {
       decoration = BoxDecoration(
         borderRadius: BorderRadius.circular(1.0),
         border: Border.all(
-          color: themeColor,
+          color: Colors.white,
         ),
       );
     }
