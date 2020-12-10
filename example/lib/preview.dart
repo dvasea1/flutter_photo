@@ -14,15 +14,30 @@ class PreviewPage extends StatelessWidget {
       appBar: AppBar(
         title: Text("Preview"),
       ),
-      body: ListView(
-        children: list
-            .map((item) => AssetImageWidget(
-                  assetEntity: item,
-                  width: 300,
-                  height: 200,
-                  boxFit: BoxFit.cover,
-                ))
-            .toList(),
+      body: Column(
+        children: [
+          Expanded(
+              child: ListView(
+            children: list
+                .map((item) => AssetImageWidget(
+                      assetEntity: item,
+                      width: 300,
+                      height: 200,
+                      boxFit: BoxFit.cover,
+                    ))
+                .toList(),
+          )),
+          InkWell(
+            child: Container(
+              height: 50,
+              color: Colors.red,
+              width: 100,
+            ),
+            onTap: () {
+              Navigator.of(context).popUntil((route) => route.isFirst);
+            },
+          )
+        ],
       ),
     );
   }

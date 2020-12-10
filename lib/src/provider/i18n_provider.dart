@@ -8,6 +8,8 @@ abstract class I18nProvider {
 
   String getSureText(Options options, int currentCount);
 
+  String getSureTextEmpty(Options options, int currentCount);
+
   String getPreviewText(Options options, SelectedProvider selectedProvider);
 
   String getSelectedOptionsText(Options options);
@@ -26,14 +28,15 @@ abstract class I18nProvider {
 
   static const I18nProvider english = ENProvider();
 
-  String  getSubTitleText() {
+  String getSubTitleText() {
     return "";
   }
 
-  String  getNoPhotosSelectiveText() {
+  String getNoPhotosSelectiveText() {
     return "Manage the photos and videos";
   }
-  String  getOpenSettingsText() {
+
+  String getOpenSettingsText() {
     return "Manage";
   }
 }
@@ -53,6 +56,11 @@ class CNProvider extends I18nProvider {
 
   @override
   String getSureText(Options options, int currentCount) {
+    return "确定($currentCount/${options.maxSelected})";
+  }
+
+  @override
+  String getSureTextEmpty(Options options, int currentCount) {
     return "确定($currentCount/${options.maxSelected})";
   }
 
@@ -99,6 +107,11 @@ class ENProvider extends I18nProvider {
   @override
   String getSureText(Options options, int currentCount) {
     return "Save ($currentCount/${options.maxSelected})";
+  }
+
+  @override
+  String getSureTextEmpty(Options options, int currentCount) {
+    return "Skip";
   }
 
   @override
@@ -160,6 +173,7 @@ abstract class I18NCustomProvider implements I18nProvider {
   I18NPermissionProvider getNotPermissionText(Options options) {
     return notPermissionText;
   }
+
 }
 
 class I18NPermissionProvider {

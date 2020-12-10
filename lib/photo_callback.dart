@@ -1,11 +1,6 @@
-library photo;
-
-import 'dart:async';
+library photo_callback;
 
 import 'package:flutter/material.dart';
-
-import 'package:photo_manager/photo_manager.dart';
-
 import 'package:photo/src/delegate/badge_delegate.dart';
 import 'package:photo/src/delegate/checkbox_builder_delegate.dart';
 import 'package:photo/src/delegate/loading_delegate.dart';
@@ -14,21 +9,23 @@ import 'package:photo/src/entity/options.dart';
 import 'package:photo/src/provider/i18n_provider.dart';
 import 'package:photo/src/ui/dialog/not_permission_dialog.dart';
 import 'package:photo/src/ui/photo_app.dart';
+import 'package:photo_manager/photo_manager.dart';
+
+export 'package:photo/src/delegate/badge_delegate.dart';
 export 'package:photo/src/delegate/checkbox_builder_delegate.dart';
 export 'package:photo/src/delegate/loading_delegate.dart';
 export 'package:photo/src/delegate/sort_delegate.dart';
+export 'package:photo/src/entity/options.dart' show PickType;
 export 'package:photo/src/provider/i18n_provider.dart'
     show I18NCustomProvider, I18nProvider, CNProvider, ENProvider;
-export 'package:photo/src/entity/options.dart' show PickType;
-export 'package:photo/src/delegate/badge_delegate.dart';
 
-class PhotoPicker {
-  static PhotoPicker _instance;
+class PhotoPickerCallback {
+  static PhotoPickerCallback _instance;
 
-  PhotoPicker._();
+  PhotoPickerCallback._();
 
-  factory PhotoPicker() {
-    _instance ??= PhotoPicker._();
+  factory PhotoPickerCallback() {
+    _instance ??= PhotoPickerCallback._();
     return _instance;
   }
 
@@ -64,7 +61,8 @@ class PhotoPicker {
   ///   [pickedAssetList]: The results of the last selection can be passed in for easy secondary selection.
   ///
   /// params see readme.md
-  static Future<List<AssetEntity>> pickAsset({
+
+  static void pickAssetWithCallback({
     @required BuildContext context,
     int rowCount = 4,
     int maxSelected = 9,
@@ -75,7 +73,7 @@ class PhotoPicker {
     Color textColor,
     Color disableColor,
     int thumbSize = 64,
-    I18nProvider provider = I18nProvider.chinese,
+    I18nProvider provider = I18nProvider.english,
     SortDelegate sortDelegate,
     CheckBoxBuilderDelegate checkBoxBuilderDelegate,
     LoadingDelegate loadingDelegate,
@@ -84,6 +82,7 @@ class PhotoPicker {
     List<AssetPathEntity> photoPathList,
     List<AssetEntity> pickedAssetList,
     Widget cancelWidget,
+    Function onAssetsSelected,
   }) {
     assert(provider != null, "provider must be not null");
     assert(context != null, "context must be not null");
@@ -117,21 +116,17 @@ class PhotoPicker {
       cancelWidget: cancelWidget
     );
 
-    return PhotoPicker()._pickAsset(
-      context,
-      options,
-      provider,
-      photoPathList,
-      pickedAssetList,
-    );
+    PhotoPickerCallback()._pickAsset(context, options, provider, photoPathList,
+        pickedAssetList, onAssetsSelected);
   }
 
-  Future<List<AssetEntity>> _pickAsset(
+  void _pickAsset(
     BuildContext context,
     Options options,
     I18nProvider provider,
     List<AssetPathEntity> photoList,
     List<AssetEntity> pickedAssetList,
+    Function onAssetsSelected,
   ) async {
     var requestPermission = await PhotoManager.requestPermission();
     if (requestPermission != true) {
@@ -147,29 +142,26 @@ class PhotoPicker {
       return null;
     }
 
-    return _openGalleryContentPage(
-      context,
-      options,
-      provider,
-      photoList,
-      pickedAssetList,
-    );
+    return _openGalleryContentPage(context, options, provider, photoList,
+        pickedAssetList, onAssetsSelected);
   }
 
-  Future<List<AssetEntity>> _openGalleryContentPage(
+  void _openGalleryContentPage(
     BuildContext context,
     Options options,
     I18nProvider provider,
     List<AssetPathEntity> photoList,
     List<AssetEntity> pickedAssetList,
-  ) async {
-    return Navigator.of(context, rootNavigator: true).push(
+    Function onAssetsSelected,
+  ) {
+    Navigator.of(context, rootNavigator: true).push(
       MaterialPageRoute(
         builder: (ctx) => PhotoApp(
           options: options,
           provider: provider,
           photoList: photoList,
           pickedAssetList: pickedAssetList,
+          onAssetsSelected: onAssetsSelected,
         ),
       ),
     );

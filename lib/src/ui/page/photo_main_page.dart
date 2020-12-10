@@ -24,13 +24,11 @@ class PhotoMainPage extends StatefulWidget {
   final ValueChanged<List<AssetEntity>> onClose;
   final Options options;
   final List<AssetPathEntity> photoList;
+  final VoidCallback onExit;
 
-  const PhotoMainPage({
-    Key key,
-    this.onClose,
-    this.options,
-    this.photoList,
-  }) : super(key: key);
+  const PhotoMainPage(
+      {Key key, this.onClose, this.options, this.photoList, this.onExit})
+      : super(key: key);
 
   @override
   _PhotoMainPageState createState() => _PhotoMainPageState();
@@ -110,112 +108,131 @@ class _PhotoMainPageState extends State<PhotoMainPage>
     super.dispose();
   }
 
+  int _getColorFromHex(String hexColor) {
+    hexColor = hexColor.toUpperCase().replaceAll("#", "");
+    if (hexColor.length == 6) {
+      hexColor = "FF" + hexColor;
+    }
+    return int.parse(hexColor, radix: 16);
+  }
+
   @override
   Widget build(BuildContext context) {
     var textStyle = TextStyle(
       color: options.textColor,
-      fontSize: 17.7,
+      fontSize: 16,
     );
-    return Theme(
-      data: Theme.of(context).copyWith(primaryColor: options.themeColor),
-      child: DefaultTextStyle(
-        style: textStyle,
-        child: Scaffold(
-          appBar: AppBar(
-            titleSpacing: 0,
-            automaticallyImplyLeading: false,
-            /*   leading: IconButton(
-              icon: Icon(
-                Icons.close,
-                color: options.textColor,
-              ),
-              onPressed: _cancel,
-            ),*/
-            title: Container(
-              width: double.infinity,
-              child: Stack(
+    return Scaffold(
+      appBar: AppBar(
+        bottom: PreferredSize(
+          child: Container(
+            height: 0.5,
+            color: Color(_getColorFromHex("#E2E3E6")),
+            width: double.infinity,
+          ),
+          preferredSize: Size(double.infinity, 0),
+        ),
+        titleSpacing: 0,
+        backgroundColor: Colors.white,
+        automaticallyImplyLeading: false,
+        elevation: 0,
+        title: Container(
+          width: double.infinity,
+          child: Stack(
+            children: <Widget>[
+              Row(
                 children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      InkWell(
-                        child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 15),
-                          child: Center(
-                            child: Icon(
-                              Icons.close,
-                              color: options.textColor,
-                            ),
-                          ),
-                          // onPressed: _cancel,
+                  Material(
+                    color: Colors.transparent,
+                    child: InkResponse(
+                      radius: 20,
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 15),
+                        child: Center(
+                          child: options.cancelWidget == null
+                              ? Icon(
+                                  Icons.close,
+                                  color: Colors.black,
+                                  size: 25,
+                                )
+                              : options.cancelWidget,
                         ),
-                        onTap: _cancel,
+                        // onPressed: _cancel,
                       ),
-                    ],
-                  ),
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: 50),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text(
-                          currentGalleryName,
-                          style: TextStyle(
-                            color: options.textColor,
-                            fontSize: 14,
-                          ),
-                        ),
-                        Container(
-                          child: InkWell(
-                            child: Container(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Text(
-                                    i18nProvider.getSubTitleText(),
-                                    style: TextStyle(
-                                      color: options.textColor,
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                  Icon(
-                                    Icons.arrow_drop_down,
-                                    color: Colors.white,
-                                  )
-                                ],
-                              ),
-                            ),
-                            onTap: () {
-                              if ((assetProvider.getPaging() != null)) {
-                                _GalleryListShown = true;
-                                setState(() {});
-                              }
-                            },
-                          ),
-                        ),
-                      ],
+                      onTap: () {
+                        widget.onExit();
+                      },
                     ),
                   ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      InkWell(
+                ],
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 50),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      currentGalleryName,
+                      style: TextStyle(
+                        color: options.textColor,
+                        fontSize: 14,
+                      ),
+                    ),
+                    Container(
+                      child: InkWell(
                         child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 15),
-                          child: Center(
-                            child: Text(
-                              i18nProvider.getSureText(options, selectedCount),
-                              style: selectedCount == 0
-                                  ? textStyle.copyWith(
-                                      color: options.disableColor)
-                                  : textStyle,
-                            ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Text(
+                                i18nProvider.getSubTitleText(),
+                                style: TextStyle(
+                                  color: options.textColor,
+                                  fontSize: 12,
+                                ),
+                              ),
+                              Icon(
+                                Icons.arrow_drop_down,
+                                color: options.textColor,
+                              )
+                            ],
                           ),
                         ),
-                        onTap: selectedCount == 0 ? null : sure,
-                      )
-                      /*FlatButton(
+                        onTap: () {
+                          if ((assetProvider.getPaging() != null)) {
+                            _GalleryListShown = true;
+                            setState(() {});
+                          }
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  InkWell(
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 15),
+                      child: Center(
+                        child: Text(
+                          selectedCount == 0
+                              ? i18nProvider.getSureTextEmpty(
+                                  options, selectedCount)
+                              : i18nProvider.getSureText(
+                                  options, selectedCount),
+                          style: selectedCount == 0
+                              ? textStyle.copyWith(color: options.disableColor)
+                              : textStyle,
+                        ),
+                      ),
+                    ),
+                    onTap: selectedCount == 0 ? null : sure,
+                  )
+                  /*FlatButton(
               splashColor: Colors.transparent,
               child: Text(
                 i18nProvider.getSureText(options, selectedCount),
@@ -225,12 +242,12 @@ class _PhotoMainPageState extends State<PhotoMainPage>
               ),
               onPressed: selectedCount == 0 ? null : sure,
             )*/
-                    ],
-                  )
                 ],
-              ),
-              height: 56,
-            ) /*Center(
+              )
+            ],
+          ),
+          height: 56,
+        ) /*Center(
               child: Text(
                 i18nProvider.getTitleText(options),
                 style: TextStyle(
@@ -239,8 +256,8 @@ class _PhotoMainPageState extends State<PhotoMainPage>
                 ),
               ),
             )*/
-            ,
-            /*actions: <Widget>[
+        ,
+        /*actions: <Widget>[
               FlatButton(
                 splashColor: Colors.transparent,
                 child: Text(
@@ -252,9 +269,9 @@ class _PhotoMainPageState extends State<PhotoMainPage>
                 onPressed: selectedCount == 0 ? null : sure,
               ),
             ],*/
-          ),
-          body: _buildBody(),
-          /*  bottomNavigationBar: _BottomWidget(
+      ),
+      body: _buildBody(),
+      /*  bottomNavigationBar: _BottomWidget(
             key: scaffoldKey,
             provider: i18nProvider,
             options: options,
@@ -264,9 +281,14 @@ class _PhotoMainPageState extends State<PhotoMainPage>
             selectedProvider: this,
             galleryListProvider: this,
           ),*/
-        ),
+    ) /*Theme(
+      data: Theme.of(context).copyWith(primaryColor: options.themeColor),
+      child: DefaultTextStyle(
+        style: textStyle,
+        child: ,
       ),
-    );
+    )*/
+        ;
   }
 
   void _cancel() {

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:photo/photo.dart';
+import 'package:photo/photo_callback.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 import './preview.dart';
@@ -123,7 +124,7 @@ class _MyHomePageState extends State<MyHomePage> with LoadingDelegate {
     /// context is required, other params is optional.
     /// context is required, other params is optional.
 
-    List<AssetEntity> imgList = await PhotoPicker.pickAsset(
+    PhotoPickerCallback.pickAssetWithCallback(
       // BuildContext required
       context: context,
 
@@ -131,7 +132,7 @@ class _MyHomePageState extends State<MyHomePage> with LoadingDelegate {
       themeColor: Colors.green,
       // the title color and bottom color
 
-      textColor: Colors.white,
+      textColor: Colors.black,
       // text color
       padding: 1.0,
       // item padding
@@ -169,25 +170,27 @@ class _MyHomePageState extends State<MyHomePage> with LoadingDelegate {
       pickType: type,
 
       photoPathList: pathList,
+
+      onAssetsSelected: (List<AssetEntity> imgList ) async {
+        if (imgList == null || imgList.isEmpty) {
+          showToast("No pick item.");
+        } else {
+          List<String> r = [];
+          for (var e in imgList) {
+            var file = await e.file;
+            r.add(file.absolute.path);
+          }
+          currentSelected = r.join("\n\n");
+
+          List<AssetEntity> preview = [];
+          preview.addAll(imgList);
+          Navigator.push(context,
+              MaterialPageRoute(builder: (_) => PreviewPage(list: preview)));
+        }
+      }
     );
 
-    if (imgList == null || imgList.isEmpty) {
-      showToast("No pick item.");
-      return;
-    } else {
-      List<String> r = [];
-      for (var e in imgList) {
-        var file = await e.file;
-        r.add(file.absolute.path);
-      }
-      currentSelected = r.join("\n\n");
 
-      List<AssetEntity> preview = [];
-      preview.addAll(imgList);
-      Navigator.push(context,
-          MaterialPageRoute(builder: (_) => PreviewPage(list: preview)));
-    }
-    setState(() {});
   }
 
   void routePage(Widget widget) {
