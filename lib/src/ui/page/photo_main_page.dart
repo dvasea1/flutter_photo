@@ -119,7 +119,7 @@ class _PhotoMainPageState extends State<PhotoMainPage>
   @override
   Widget build(BuildContext context) {
     var textStyle = TextStyle(
-      color: options.textColor,
+      color: options.enabledColor,
       fontSize: 16,
     );
     return Scaffold(
@@ -188,14 +188,16 @@ class _PhotoMainPageState extends State<PhotoMainPage>
                               Text(
                                 i18nProvider.getSubTitleText(),
                                 style: TextStyle(
-                                  color: options.textColor,
+                                  color: options.textSubtitleColor,
                                   fontSize: 12,
                                 ),
                               ),
-                              Icon(
-                                Icons.arrow_drop_down,
-                                color: options.textColor,
-                              )
+                              options.subtitleWidgetArrow == null
+                                  ? Icon(
+                                      Icons.arrow_drop_down,
+                                      color: options.textSubtitleColor,
+                                    )
+                                  : options.subtitleWidgetArrow
                             ],
                           ),
                         ),

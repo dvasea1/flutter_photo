@@ -73,7 +73,9 @@ class PhotoPicker {
     Color themeColor,
     Color dividerColor,
     Color textColor,
+    Color textSubtitleColor,
     Color disableColor,
+    Color enabledColor,
     int thumbSize = 64,
     I18nProvider provider = I18nProvider.chinese,
     SortDelegate sortDelegate,
@@ -84,6 +86,7 @@ class PhotoPicker {
     List<AssetPathEntity> photoPathList,
     List<AssetEntity> pickedAssetList,
     Widget cancelWidget,
+    Widget subtitleWidgetArrow
   }) {
     assert(provider != null, "provider must be not null");
     assert(context != null, "context must be not null");
@@ -114,7 +117,10 @@ class PhotoPicker {
       loadingDelegate: loadingDelegate,
       badgeDelegate: badgeDelegate,
       pickType: pickType,
-      cancelWidget: cancelWidget
+      cancelWidget: cancelWidget,
+      textSubtitleColor: textSubtitleColor,
+      subtitleWidgetArrow: subtitleWidgetArrow,
+      enabledColor: enabledColor
     );
 
     return PhotoPicker()._pickAsset(

@@ -19,7 +19,11 @@ class Options {
 
   final Color textColor;
 
+  final Color textSubtitleColor;
+
   final Color disableColor;
+
+  final Color enabledColor;
 
   final int thumbSize;
 
@@ -34,6 +38,8 @@ class Options {
   final PickType pickType;
 
   final Widget cancelWidget;
+
+  final Widget subtitleWidgetArrow;
 
   const Options({
     this.rowCount,
@@ -50,7 +56,10 @@ class Options {
     this.loadingDelegate,
     this.badgeDelegate,
     this.pickType,
-    this.cancelWidget
+    this.cancelWidget,
+    this.textSubtitleColor,
+    this.subtitleWidgetArrow,
+    this.enabledColor
   });
 }
 

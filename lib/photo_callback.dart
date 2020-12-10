@@ -62,28 +62,30 @@ class PhotoPickerCallback {
   ///
   /// params see readme.md
 
-  static void pickAssetWithCallback({
-    @required BuildContext context,
-    int rowCount = 4,
-    int maxSelected = 9,
-    double padding = 0.5,
-    double itemRadio = 1.0,
-    Color themeColor,
-    Color dividerColor,
-    Color textColor,
-    Color disableColor,
-    int thumbSize = 64,
-    I18nProvider provider = I18nProvider.english,
-    SortDelegate sortDelegate,
-    CheckBoxBuilderDelegate checkBoxBuilderDelegate,
-    LoadingDelegate loadingDelegate,
-    PickType pickType = PickType.all,
-    BadgeDelegate badgeDelegate = const DefaultBadgeDelegate(),
-    List<AssetPathEntity> photoPathList,
-    List<AssetEntity> pickedAssetList,
-    Widget cancelWidget,
-    Function onAssetsSelected,
-  }) {
+  static void pickAssetWithCallback(
+      {@required BuildContext context,
+      int rowCount = 4,
+      int maxSelected = 9,
+      double padding = 0.5,
+      double itemRadio = 1.0,
+      Color themeColor,
+      Color dividerColor,
+      Color textColor,
+      Color textSubtitleColor,
+      Color disableColor,
+      Color enabledColor,
+      int thumbSize = 64,
+      I18nProvider provider = I18nProvider.english,
+      SortDelegate sortDelegate,
+      CheckBoxBuilderDelegate checkBoxBuilderDelegate,
+      LoadingDelegate loadingDelegate,
+      PickType pickType = PickType.all,
+      BadgeDelegate badgeDelegate = const DefaultBadgeDelegate(),
+      List<AssetPathEntity> photoPathList,
+      List<AssetEntity> pickedAssetList,
+      Widget cancelWidget,
+      Function onAssetsSelected,
+      Widget subtitleWidgetArrow}) {
     assert(provider != null, "provider must be not null");
     assert(context != null, "context must be not null");
     assert(pickType != null, "pickType must be not null");
@@ -99,22 +101,24 @@ class PhotoPickerCallback {
     loadingDelegate ??= DefaultLoadingDelegate();
 
     var options = Options(
-      rowCount: rowCount,
-      dividerColor: dividerColor,
-      maxSelected: maxSelected,
-      itemRadio: itemRadio,
-      padding: padding,
-      disableColor: disableColor,
-      textColor: textColor,
-      themeColor: themeColor,
-      thumbSize: thumbSize,
-      sortDelegate: sortDelegate,
-      checkBoxBuilderDelegate: checkBoxBuilderDelegate,
-      loadingDelegate: loadingDelegate,
-      badgeDelegate: badgeDelegate,
-      pickType: pickType,
-      cancelWidget: cancelWidget
-    );
+        rowCount: rowCount,
+        dividerColor: dividerColor,
+        maxSelected: maxSelected,
+        itemRadio: itemRadio,
+        padding: padding,
+        disableColor: disableColor,
+        textColor: textColor,
+        themeColor: themeColor,
+        thumbSize: thumbSize,
+        sortDelegate: sortDelegate,
+        checkBoxBuilderDelegate: checkBoxBuilderDelegate,
+        loadingDelegate: loadingDelegate,
+        badgeDelegate: badgeDelegate,
+        pickType: pickType,
+        cancelWidget: cancelWidget,
+        textSubtitleColor: textSubtitleColor,
+        subtitleWidgetArrow: subtitleWidgetArrow,
+        enabledColor: enabledColor);
 
     PhotoPickerCallback()._pickAsset(context, options, provider, photoPathList,
         pickedAssetList, onAssetsSelected);
