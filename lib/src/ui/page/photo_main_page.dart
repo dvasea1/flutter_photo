@@ -25,9 +25,17 @@ class PhotoMainPage extends StatefulWidget {
   final Options options;
   final List<AssetPathEntity> photoList;
   final VoidCallback onExit;
+  final VoidCallback onLimitVideo;
+  final VoidCallback onLimitImages;
 
   const PhotoMainPage(
-      {Key key, this.onClose, this.options, this.photoList, this.onExit})
+      {Key key,
+      this.onClose,
+      this.options,
+      this.photoList,
+      this.onExit,
+      this.onLimitVideo,
+      this.onLimitImages})
       : super(key: key);
 
   @override
@@ -221,18 +229,18 @@ class _PhotoMainPageState extends State<PhotoMainPage>
                       padding: EdgeInsets.symmetric(horizontal: 15),
                       child: Center(
                         child: Text(
-                          selectedCount == 0
+                          selectedTotalCount == 0
                               ? i18nProvider.getSureTextEmpty(
-                                  options, selectedCount)
+                                  options, selectedTotalCount)
                               : i18nProvider.getSureText(
-                                  options, selectedCount),
-                          style: selectedCount == 0
+                                  options, selectedTotalCount),
+                          style: selectedTotalCount == 0
                               ? textStyle.copyWith(color: options.disableColor)
                               : textStyle,
                         ),
                       ),
                     ),
-                    onTap: selectedCount == 0 ? null : sure,
+                    onTap: selectedTotalCount == 0 ? null : sure,
                   )
                   /*FlatButton(
               splashColor: Colors.transparent,
@@ -300,9 +308,34 @@ class _PhotoMainPageState extends State<PhotoMainPage>
 
   @override
   bool isUpperLimit() {
-    var result = selectedCount == options.maxSelected;
-    if (result) _showTip(i18nProvider.getMaxTipText(options));
-    return result;
+    //  debugPrint("isUpperLimit selectedImagesCount ${selectedImagesCount}");
+    // debugPrint("isUpperLimit selectedVideosCount ${selectedVideosCount}");
+
+    var resultImage = selectedImagesCount == options.maxImageSelected;
+    var resultVideo = selectedVideosCount == options.maxVideoSelected;
+
+    bool limit = false;
+
+    debugPrint("resultImage $resultImage resultVideo $resultVideo");
+
+    if (resultImage && resultVideo) {
+      debugPrint("limit image");
+      //_showTip(i18nProvider.getMaxTipText(options));
+      limit = true;
+      if(resultImage){
+        widget.onLimitImages();
+      } else {
+        widget.onLimitVideo();
+      }
+    }
+    /* else if(resultVideo && !resultImage){
+      debugPrint("limit video");
+      _showTip(i18nProvider.getMaxTipText(options));
+    limit = true;
+    }*/
+    else {}
+
+    return limit;
   }
 
   void sure() {
@@ -313,7 +346,8 @@ class _PhotoMainPageState extends State<PhotoMainPage>
     if (isPushed) {
       return;
     }
-    Scaffold.of(scaffoldKey.currentContext).showSnackBar(
+
+    /*Scaffold.of(scaffoldKey.currentContext).showSnackBar(
       SnackBar(
         content: Text(
           msg,
@@ -325,7 +359,7 @@ class _PhotoMainPageState extends State<PhotoMainPage>
         duration: Duration(milliseconds: 1500),
         backgroundColor: themeColor.withOpacity(0.7),
       ),
-    );
+    );*/
   }
 
   void _refreshList() async {
@@ -352,7 +386,8 @@ class _PhotoMainPageState extends State<PhotoMainPage>
         pathList = await PhotoManager.getAssetPathList(type: RequestType.video);
         break;
       default:
-        pathList = await PhotoManager.getAssetPathList(type: RequestType.image);
+        pathList = await PhotoManager.getAssetPathList(
+            type: RequestType.image | RequestType.video);
     }
 
     _onRefreshAssetPathList(pathList);
@@ -739,7 +774,8 @@ class _PhotoMainPageState extends State<PhotoMainPage>
         pathList = await PhotoManager.getAssetPathList(type: RequestType.video);
         break;
       default:
-        pathList = await PhotoManager.getAssetPathList();
+        pathList = await PhotoManager.getAssetPathList(
+            type: RequestType.image | RequestType.video);
     }
 
     if (pathList == null) {

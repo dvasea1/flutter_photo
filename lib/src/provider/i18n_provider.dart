@@ -51,17 +51,17 @@ class CNProvider extends I18nProvider {
 
   @override
   String getPreviewText(Options options, SelectedProvider selectedProvider) {
-    return "预览(${selectedProvider.selectedCount})";
+    return "预览(${selectedProvider.selectedTotalCount})";
   }
 
   @override
   String getSureText(Options options, int currentCount) {
-    return "确定($currentCount/${options.maxSelected})";
+    return "确定($currentCount/${options.maxImageSelected})";
   }
 
   @override
   String getSureTextEmpty(Options options, int currentCount) {
-    return "确定($currentCount/${options.maxSelected})";
+    return "确定($currentCount/${options.maxImageSelected})";
   }
 
   @override
@@ -71,7 +71,7 @@ class CNProvider extends I18nProvider {
 
   @override
   String getMaxTipText(Options options) {
-    return "您已经选择了${options.maxSelected}张图片";
+    return "您已经选择了${options.maxImageSelected}张图片";
   }
 
   @override
@@ -101,12 +101,12 @@ class ENProvider extends I18nProvider {
 
   @override
   String getPreviewText(Options options, SelectedProvider selectedProvider) {
-    return "Preview (${selectedProvider.selectedCount})";
+    return "Preview (${selectedProvider.selectedTotalCount})";
   }
 
   @override
   String getSureText(Options options, int currentCount) {
-    return "Save ($currentCount/${options.maxSelected})";
+    return "Save ";
   }
 
   @override
@@ -121,7 +121,7 @@ class ENProvider extends I18nProvider {
 
   @override
   String getMaxTipText(Options options) {
-    return "Select ${options.maxSelected} pictures at most";
+    return "Select pictures at most";
   }
 
   @override

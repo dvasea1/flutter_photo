@@ -7,7 +7,9 @@ import 'package:photo/src/delegate/sort_delegate.dart';
 class Options {
   final int rowCount;
 
-  final int maxSelected;
+  final int maxImageSelected;
+
+  final int maxVideoSelected;
 
   final double padding;
 
@@ -46,7 +48,8 @@ class Options {
 
   const Options({
     this.rowCount,
-    this.maxSelected,
+    this.maxImageSelected,
+    this.maxVideoSelected,
     this.padding,
     this.itemRadio,
     this.themeColor,

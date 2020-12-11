@@ -62,32 +62,36 @@ class PhotoPickerCallback {
   ///
   /// params see readme.md
 
-  static void pickAssetWithCallback(
-      {@required BuildContext context,
-      int rowCount = 4,
-      int maxSelected = 9,
-      double padding = 0.5,
-      double itemRadio = 1.0,
-      Color themeColor,
-      Color dividerColor,
-      Color textColor,
-      Color textSubtitleColor,
-      Color disableColor,
-      Color enabledColor,
-      int thumbSize = 64,
-      I18nProvider provider = I18nProvider.english,
-      SortDelegate sortDelegate,
-      bool showManagePhotos = false,
-      CheckBoxBuilderDelegate checkBoxBuilderDelegate,
-      LoadingDelegate loadingDelegate,
-      PickType pickType = PickType.all,
-      BadgeDelegate badgeDelegate = const DefaultBadgeDelegate(),
-      List<AssetPathEntity> photoPathList,
-      List<AssetEntity> pickedAssetList,
-      Widget cancelWidget,
-      Function onAssetsSelected,
-      Widget subtitleWidgetArrow,
-      Widget managePhotosWidget}) {
+  static void pickAssetWithCallback({
+    @required BuildContext context,
+    int rowCount = 4,
+    int maxImageSelected = 9,
+    int maxVideoSelected = 2,
+    double padding = 0.5,
+    double itemRadio = 1.0,
+    Color themeColor,
+    Color dividerColor,
+    Color textColor,
+    Color textSubtitleColor,
+    Color disableColor,
+    Color enabledColor,
+    int thumbSize = 64,
+    I18nProvider provider = I18nProvider.english,
+    SortDelegate sortDelegate,
+    bool showManagePhotos = false,
+    CheckBoxBuilderDelegate checkBoxBuilderDelegate,
+    LoadingDelegate loadingDelegate,
+    PickType pickType = PickType.all,
+    BadgeDelegate badgeDelegate = const DefaultBadgeDelegate(),
+    List<AssetPathEntity> photoPathList,
+    List<AssetEntity> pickedAssetList,
+    Widget cancelWidget,
+    Function onAssetsSelected,
+    Widget subtitleWidgetArrow,
+    Widget managePhotosWidget,
+    Function onAssetsVideoLimit,
+    Function onAssetsImageLimit,
+  }) {
     assert(provider != null, "provider must be not null");
     assert(context != null, "context must be not null");
     assert(pickType != null, "pickType must be not null");
@@ -105,7 +109,8 @@ class PhotoPickerCallback {
     var options = Options(
         rowCount: rowCount,
         dividerColor: dividerColor,
-        maxSelected: maxSelected,
+        maxVideoSelected: maxVideoSelected,
+        maxImageSelected: maxImageSelected,
         itemRadio: itemRadio,
         padding: padding,
         disableColor: disableColor,
@@ -124,8 +129,15 @@ class PhotoPickerCallback {
         showManagePhotos: showManagePhotos,
         managePhotosWidget: managePhotosWidget);
 
-    PhotoPickerCallback()._pickAsset(context, options, provider, photoPathList,
-        pickedAssetList, onAssetsSelected);
+    PhotoPickerCallback()._pickAsset(
+        context,
+        options,
+        provider,
+        photoPathList,
+        pickedAssetList,
+        onAssetsSelected,
+        onAssetsVideoLimit,
+        onAssetsImageLimit);
   }
 
   void _pickAsset(
@@ -135,6 +147,8 @@ class PhotoPickerCallback {
     List<AssetPathEntity> photoList,
     List<AssetEntity> pickedAssetList,
     Function onAssetsSelected,
+    Function onAssetsVideoLimit,
+    Function onAssetsImageLimit,
   ) async {
     var requestPermission = await PhotoManager.requestPermission();
     if (requestPermission != true) {
@@ -150,8 +164,15 @@ class PhotoPickerCallback {
       return null;
     }
 
-    return _openGalleryContentPage(context, options, provider, photoList,
-        pickedAssetList, onAssetsSelected);
+    return _openGalleryContentPage(
+        context,
+        options,
+        provider,
+        photoList,
+        pickedAssetList,
+        onAssetsSelected,
+        onAssetsVideoLimit,
+        onAssetsImageLimit);
   }
 
   void _openGalleryContentPage(
@@ -161,6 +182,8 @@ class PhotoPickerCallback {
     List<AssetPathEntity> photoList,
     List<AssetEntity> pickedAssetList,
     Function onAssetsSelected,
+    Function onAssetsVideoLimit,
+    Function onAssetsImageLimit,
   ) {
     Navigator.of(context, rootNavigator: true).push(
       MaterialPageRoute(
@@ -170,6 +193,8 @@ class PhotoPickerCallback {
           photoList: photoList,
           pickedAssetList: pickedAssetList,
           onAssetsSelected: onAssetsSelected,
+          onAssetsImageLimit: onAssetsImageLimit,
+          onAssetsVideoLimit: onAssetsVideoLimit,
         ),
       ),
     );

@@ -5,7 +5,19 @@ import 'package:photo_manager/photo_manager.dart';
 abstract class SelectedProvider {
   List<AssetEntity> selectedList = [];
 
-  int get selectedCount => selectedList.length;
+  int get selectedTotalCount => selectedList.length;
+
+  int get selectedImagesCount {
+    return selectedList
+        .where((e) => e.type == AssetType.image)
+        .length;
+  }
+
+  int get selectedVideosCount {
+    return selectedList
+        .where((e) => e.type == AssetType.video)
+        .length;
+  }
 
   bool containsEntity(AssetEntity entity) {
     return selectedList.contains(entity);

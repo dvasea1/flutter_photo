@@ -3,9 +3,6 @@ library photo;
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-
-import 'package:photo_manager/photo_manager.dart';
-
 import 'package:photo/src/delegate/badge_delegate.dart';
 import 'package:photo/src/delegate/checkbox_builder_delegate.dart';
 import 'package:photo/src/delegate/loading_delegate.dart';
@@ -14,13 +11,15 @@ import 'package:photo/src/entity/options.dart';
 import 'package:photo/src/provider/i18n_provider.dart';
 import 'package:photo/src/ui/dialog/not_permission_dialog.dart';
 import 'package:photo/src/ui/photo_app.dart';
+import 'package:photo_manager/photo_manager.dart';
+
+export 'package:photo/src/delegate/badge_delegate.dart';
 export 'package:photo/src/delegate/checkbox_builder_delegate.dart';
 export 'package:photo/src/delegate/loading_delegate.dart';
 export 'package:photo/src/delegate/sort_delegate.dart';
+export 'package:photo/src/entity/options.dart' show PickType;
 export 'package:photo/src/provider/i18n_provider.dart'
     show I18NCustomProvider, I18nProvider, CNProvider, ENProvider;
-export 'package:photo/src/entity/options.dart' show PickType;
-export 'package:photo/src/delegate/badge_delegate.dart';
 
 class PhotoPicker {
   static PhotoPicker _instance;
@@ -67,7 +66,8 @@ class PhotoPicker {
   static Future<List<AssetEntity>> pickAsset({
     @required BuildContext context,
     int rowCount = 4,
-    int maxSelected = 9,
+    int maxImageSelected = 9,
+    int maxVideoSelected = 2,
     double padding = 0.5,
     double itemRadio = 1.0,
     Color themeColor,
@@ -88,7 +88,9 @@ class PhotoPicker {
     List<AssetEntity> pickedAssetList,
     Widget cancelWidget,
     Widget subtitleWidgetArrow,
-    Widget managePhotosWidget
+    Widget managePhotosWidget,
+    Function onAssetsVideoLimit,
+    Function onAssetsImageLimit,
   }) {
     assert(provider != null, "provider must be not null");
     assert(context != null, "context must be not null");
@@ -105,35 +107,30 @@ class PhotoPicker {
     loadingDelegate ??= DefaultLoadingDelegate();
 
     var options = Options(
-      rowCount: rowCount,
-      dividerColor: dividerColor,
-      maxSelected: maxSelected,
-      itemRadio: itemRadio,
-      padding: padding,
-      disableColor: disableColor,
-      textColor: textColor,
-      themeColor: themeColor,
-      thumbSize: thumbSize,
-      sortDelegate: sortDelegate,
-      checkBoxBuilderDelegate: checkBoxBuilderDelegate,
-      loadingDelegate: loadingDelegate,
-      badgeDelegate: badgeDelegate,
-      pickType: pickType,
-      cancelWidget: cancelWidget,
-      textSubtitleColor: textSubtitleColor,
-      subtitleWidgetArrow: subtitleWidgetArrow,
-      enabledColor: enabledColor,
-      showManagePhotos: showManagePhotos,
-      managePhotosWidget: managePhotosWidget
-    );
+        rowCount: rowCount,
+        dividerColor: dividerColor,
+        maxImageSelected: maxImageSelected,
+        maxVideoSelected: maxVideoSelected,
+        itemRadio: itemRadio,
+        padding: padding,
+        disableColor: disableColor,
+        textColor: textColor,
+        themeColor: themeColor,
+        thumbSize: thumbSize,
+        sortDelegate: sortDelegate,
+        checkBoxBuilderDelegate: checkBoxBuilderDelegate,
+        loadingDelegate: loadingDelegate,
+        badgeDelegate: badgeDelegate,
+        pickType: pickType,
+        cancelWidget: cancelWidget,
+        textSubtitleColor: textSubtitleColor,
+        subtitleWidgetArrow: subtitleWidgetArrow,
+        enabledColor: enabledColor,
+        showManagePhotos: showManagePhotos,
+        managePhotosWidget: managePhotosWidget);
 
-    return PhotoPicker()._pickAsset(
-      context,
-      options,
-      provider,
-      photoPathList,
-      pickedAssetList,
-    );
+    return PhotoPicker()._pickAsset(context, options, provider, photoPathList,
+        pickedAssetList, onAssetsVideoLimit, onAssetsImageLimit);
   }
 
   Future<List<AssetEntity>> _pickAsset(
@@ -142,6 +139,8 @@ class PhotoPicker {
     I18nProvider provider,
     List<AssetPathEntity> photoList,
     List<AssetEntity> pickedAssetList,
+    Function onAssetsVideoLimit,
+    Function onAssetsImageLimit,
   ) async {
     var requestPermission = await PhotoManager.requestPermission();
     if (requestPermission != true) {
@@ -157,13 +156,8 @@ class PhotoPicker {
       return null;
     }
 
-    return _openGalleryContentPage(
-      context,
-      options,
-      provider,
-      photoList,
-      pickedAssetList,
-    );
+    return _openGalleryContentPage(context, options, provider, photoList,
+        pickedAssetList, onAssetsVideoLimit, onAssetsImageLimit);
   }
 
   Future<List<AssetEntity>> _openGalleryContentPage(
@@ -172,6 +166,8 @@ class PhotoPicker {
     I18nProvider provider,
     List<AssetPathEntity> photoList,
     List<AssetEntity> pickedAssetList,
+    Function onAssetsVideoLimit,
+    Function onAssetsImageLimit,
   ) async {
     return Navigator.of(context, rootNavigator: true).push(
       MaterialPageRoute(
@@ -180,6 +176,8 @@ class PhotoPicker {
           provider: provider,
           photoList: photoList,
           pickedAssetList: pickedAssetList,
+          onAssetsImageLimit: onAssetsImageLimit,
+          onAssetsVideoLimit: onAssetsVideoLimit,
         ),
       ),
     );
