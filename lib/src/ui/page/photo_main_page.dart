@@ -240,7 +240,7 @@ class _PhotoMainPageState extends State<PhotoMainPage>
                         ),
                       ),
                     ),
-                    onTap: selectedTotalCount == 0 ? null : sure,
+                    onTap:  sure,
                   )
                   /*FlatButton(
               splashColor: Colors.transparent,
