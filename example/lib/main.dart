@@ -177,12 +177,15 @@ class _MyHomePageState extends State<MyHomePage> with LoadingDelegate {
         ),
         showManagePhotos: true,
         onAssetsSelected: (List<AssetEntity> imgList) async {
+          debugPrint("here waiting $imgList");
           if (imgList == null || imgList.isEmpty) {
             showToast("No pick item.");
           } else {
             List<String> r = [];
             for (var e in imgList) {
+              debugPrint("get file ");
               var file = await e.file;
+              debugPrint("endget file ");
               r.add(file.absolute.path);
             }
             currentSelected = r.join("\n\n");

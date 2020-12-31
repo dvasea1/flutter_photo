@@ -55,7 +55,7 @@ class _PhotoMainPageState extends State<PhotoMainPage>
 
   Color get themeColor => options.themeColor;
 
-  AssetPathEntity _currentPath;
+  AssetPathEntity _currentPath = AssetPathEntity();
 
   bool _isInit = false;
   bool _GalleryListShown = false;
@@ -95,6 +95,22 @@ class _PhotoMainPageState extends State<PhotoMainPage>
     _changeThrottle = Throttle(onCall: _onAssetChange);
     PhotoManager.addChangeCallback(_changeThrottle.call);
     PhotoManager.startChangeNotify();
+
+    PhotoManager.addChangeCallback((value) async {
+      //  debugPrint("addChangeCallback ${value.arguments['update'][0]['id']}");
+
+      // File file = await AssetEntity(id: value.arguments['update'][0]['id']).file;
+      // debugPrint("addChangeCallback ${file.path}");
+      exitFiles();
+      //debugPrint("addChangeCallback");
+      /*  debugPrint("changed ${value.arguments['update']}");
+    File f =   await AssetEntity(id: "3C185B1F-D372-48E3-A646-2B4EC580D95E/L0/001").file;
+      debugPrint("addChangeCallback ccccc ${f}");*/
+    });
+    PhotoManager.startChangeNotify();
+    debugPrint("_currentPath ${_currentPath.isAll}");
+
+    _currentPath.isAll = true;
   }
 
   @override
@@ -240,7 +256,7 @@ class _PhotoMainPageState extends State<PhotoMainPage>
                         ),
                       ),
                     ),
-                    onTap:  sure,
+                    onTap: sure,
                   )
                   /*FlatButton(
               splashColor: Colors.transparent,
@@ -322,7 +338,7 @@ class _PhotoMainPageState extends State<PhotoMainPage>
       debugPrint("limit image");
       //_showTip(i18nProvider.getMaxTipText(options));
       limit = true;
-      if(resultImage){
+      if (resultImage) {
         widget.onLimitImages();
       } else {
         widget.onLimitVideo();
@@ -338,8 +354,51 @@ class _PhotoMainPageState extends State<PhotoMainPage>
     return limit;
   }
 
-  void sure() {
-    widget.onClose?.call(selectedList);
+  void sure() async {
+    showDialog(
+      context: context,
+      builder: (c) => Material(
+        color: Colors.transparent,
+        child: Container(
+          child: Row(
+            children: [
+              Container(
+                width: 100,
+                height: 100,
+                color: Colors.white,
+                child: Center(
+                  child: Text("Downloading from icloud", style: TextStyle(fontSize: 13),textAlign: TextAlign.center,),
+                ),
+              )
+            ],
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+          ),
+        ),
+      ),
+    );
+    /* await Future.forEach(selectedList, (element) async {
+      await element.originFile;
+    });
+
+    debugPrint("sureeeeee");*/
+    debugPrint("CHECKFIELLS ${selectedList.length}");
+    selectedListCount = selectedList.length;
+    selectedList.forEach((element) {
+      element.originFile.then((value) {
+        exitFiles();
+        debugPrint("FILE got");
+      });
+    });
+    // widget.onClose?.call(selectedList);
+  }
+
+  exitFiles() {
+    selectedListCount--;
+    if (selectedListCount == 0) {
+      Navigator.of(context).pop();
+      widget.onClose?.call(selectedList);
+    }
   }
 
   void _showTip(String msg) {
@@ -630,7 +689,8 @@ class _PhotoMainPageState extends State<PhotoMainPage>
       // scrollController.jumpTo(0.0);
       //list.clear();
       // list.addAll(assetProvider.data);
-      debugPrint("assetProvider.data ${assetProvider.data.length}");
+      debugPrint(
+          "assetProvider.current.name.data ${assetProvider.current.name}");
       setState(() {});
 
       // _onPhotoRefresh();
@@ -759,8 +819,9 @@ class _PhotoMainPageState extends State<PhotoMainPage>
   }
 
   void _onAssetChange() {
+    debugPrint("_onAssetChange  ");
     if (useAlbum) {
-      _onPhotoRefresh();
+      // _onPhotoRefresh();
     }
   }
 

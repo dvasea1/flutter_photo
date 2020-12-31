@@ -4,6 +4,7 @@ import 'package:photo_manager/photo_manager.dart';
 
 abstract class SelectedProvider {
   List<AssetEntity> selectedList = [];
+  int selectedListCount;
 
   int get selectedTotalCount => selectedList.length;
 
