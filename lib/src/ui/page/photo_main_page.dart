@@ -357,48 +357,49 @@ class _PhotoMainPageState extends State<PhotoMainPage>
 
   void sure() async {
     if (Platform.isIOS) {
-      showDialog(
-        barrierDismissible: false,
-        context: context,
-        builder: (c) => Material(
-          color: Colors.transparent,
-          child: Container(
-            child: Row(
-              children: [
-                options.downloadingIcloudWidget != null
-                    ? options.downloadingIcloudWidget
-                    : Container(
-                        width: 100,
-                        height: 100,
-                        color: Colors.white,
-                        child: Center(
-                          child: Text(
-                            "Downloading from icloud",
-                            style: TextStyle(fontSize: 13),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      )
-              ],
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
+      if(selectedList.length > 0){
+        showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (c) => Material(
+            color: Colors.transparent,
+            child: Container(
+              child: Row(
+                children: [
+                  options.downloadingIcloudWidget != null
+                      ? options.downloadingIcloudWidget
+                      : Container(
+                    width: 100,
+                    height: 100,
+                    color: Colors.white,
+                    child: Center(
+                      child: Text(
+                        "Downloading from icloud",
+                        style: TextStyle(fontSize: 13),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  )
+                ],
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+              ),
             ),
           ),
-        ),
-      );
-      /* await Future.forEach(selectedList, (element) async {
-      await element.originFile;
-    });
+        );
 
-    debugPrint("sureeeeee");*/
-      debugPrint("CHECKFIELLS ${selectedList.length}");
-      selectedListCount = selectedList.length;
-      selectedList.forEach((element) {
-        element.originFile.then((value) {
-          exitFiles();
-          debugPrint("FILE got");
+        debugPrint("CHECKFIELLS ${selectedList.length}");
+        selectedListCount = selectedList.length;
+        selectedList.forEach((element) {
+          element.originFile.then((value) {
+            exitFiles();
+            debugPrint("FILE got");
+          });
         });
-      });
+      } else {
+        widget.onClose?.call(selectedList);
+      }
+
     } else {
       widget.onClose?.call(selectedList);
     }

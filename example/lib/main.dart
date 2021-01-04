@@ -154,6 +154,7 @@ class _MyHomePageState extends State<MyHomePage> with LoadingDelegate {
         thumbSize: 150,
         // preview thumb size , default is 64
         sortDelegate: SortDelegate.common,
+        
         // default is common ,or you make custom delegate to sort your gallery
         checkBoxBuilderDelegate: DefaultCheckBoxBuilderDelegate(
           activeColor: Colors.white,

@@ -93,6 +93,7 @@ class PhotoPickerCallback {
     Function onAssetsVideoLimit,
     Function onAssetsImageLimit,
     Function onExit,
+
   }) {
     assert(provider != null, "provider must be not null");
     assert(context != null, "context must be not null");
