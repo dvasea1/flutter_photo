@@ -42,7 +42,9 @@ class Options {
   final Widget cancelWidget;
 
   final Widget subtitleWidgetArrow;
+
   final Widget managePhotosWidget;
+  final Widget downloadingIcloudWidget;
 
   final bool showManagePhotos;
 
@@ -67,7 +69,8 @@ class Options {
     this.subtitleWidgetArrow,
     this.enabledColor,
     this.showManagePhotos,
-    this.managePhotosWidget
+    this.managePhotosWidget,
+    this.downloadingIcloudWidget,
   });
 }
 

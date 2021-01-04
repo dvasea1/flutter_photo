@@ -175,6 +175,7 @@ class _MyHomePageState extends State<MyHomePage> with LoadingDelegate {
           height: 20,
           color: Colors.red,
         ),
+        downloadingIcloudWidget: Container(width: 100, height: 100,color: Colors.green,),
         showManagePhotos: true,
         onAssetsSelected: (List<AssetEntity> imgList) async {
           debugPrint("here waiting $imgList");

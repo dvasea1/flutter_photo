@@ -89,6 +89,7 @@ class PhotoPicker {
     Widget cancelWidget,
     Widget subtitleWidgetArrow,
     Widget managePhotosWidget,
+    Widget downloadingIcloudWidget,
     Function onAssetsVideoLimit,
     Function onAssetsImageLimit,
   }) {
@@ -127,7 +128,8 @@ class PhotoPicker {
         subtitleWidgetArrow: subtitleWidgetArrow,
         enabledColor: enabledColor,
         showManagePhotos: showManagePhotos,
-        managePhotosWidget: managePhotosWidget);
+        managePhotosWidget: managePhotosWidget,
+        downloadingIcloudWidget: downloadingIcloudWidget);
 
     return PhotoPicker()._pickAsset(context, options, provider, photoPathList,
         pickedAssetList, onAssetsVideoLimit, onAssetsImageLimit);
