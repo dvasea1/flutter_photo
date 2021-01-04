@@ -44,9 +44,12 @@ class Options {
   final Widget subtitleWidgetArrow;
 
   final Widget managePhotosWidget;
+
   final Widget downloadingIcloudWidget;
 
   final bool showManagePhotos;
+
+  final Function onExit;
 
   const Options({
     this.rowCount,
@@ -71,6 +74,7 @@ class Options {
     this.showManagePhotos,
     this.managePhotosWidget,
     this.downloadingIcloudWidget,
+    this.onExit,
   });
 }
 

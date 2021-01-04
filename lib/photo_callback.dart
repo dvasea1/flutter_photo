@@ -92,6 +92,7 @@ class PhotoPickerCallback {
     Widget downloadingIcloudWidget,
     Function onAssetsVideoLimit,
     Function onAssetsImageLimit,
+    Function onExit,
   }) {
     assert(provider != null, "provider must be not null");
     assert(context != null, "context must be not null");
@@ -129,7 +130,8 @@ class PhotoPickerCallback {
         enabledColor: enabledColor,
         showManagePhotos: showManagePhotos,
         managePhotosWidget: managePhotosWidget,
-        downloadingIcloudWidget: downloadingIcloudWidget);
+        downloadingIcloudWidget: downloadingIcloudWidget,
+        onExit: onExit);
 
     PhotoPickerCallback()._pickAsset(
         context,
