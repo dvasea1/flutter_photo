@@ -62,39 +62,38 @@ class PhotoPickerCallback {
   ///
   /// params see readme.md
 
-  static void pickAssetWithCallback({
-    @required BuildContext context,
-    int rowCount = 4,
-    int maxImageSelected = 9,
-    int maxVideoSelected = 2,
-    double padding = 0.5,
-    double itemRadio = 1.0,
-    Color themeColor,
-    Color dividerColor,
-    Color textColor,
-    Color textSubtitleColor,
-    Color disableColor,
-    Color enabledColor,
-    int thumbSize = 64,
-    I18nProvider provider = I18nProvider.english,
-    SortDelegate sortDelegate,
-    bool showManagePhotos = false,
-    CheckBoxBuilderDelegate checkBoxBuilderDelegate,
-    LoadingDelegate loadingDelegate,
-    PickType pickType = PickType.all,
-    BadgeDelegate badgeDelegate = const DefaultBadgeDelegate(),
-    List<AssetPathEntity> photoPathList,
-    List<AssetEntity> pickedAssetList,
-    Widget cancelWidget,
-    Function onAssetsSelected,
-    Widget subtitleWidgetArrow,
-    Widget managePhotosWidget,
-    Widget downloadingIcloudWidget,
-    Function onAssetsVideoLimit,
-    Function onAssetsImageLimit,
-    Function onExit,
-
-  }) {
+  static void pickAssetWithCallback(
+      {@required BuildContext context,
+      int rowCount = 4,
+      int maxImageSelected = 9,
+      int maxVideoSelected = 2,
+      double padding = 0.5,
+      double itemRadio = 1.0,
+      Color themeColor,
+      Color dividerColor,
+      Color textColor,
+      Color textSubtitleColor,
+      Color disableColor,
+      Color enabledColor,
+      int thumbSize = 64,
+      I18nProvider provider = I18nProvider.english,
+      SortDelegate sortDelegate,
+      bool showManagePhotos = false,
+      CheckBoxBuilderDelegate checkBoxBuilderDelegate,
+      LoadingDelegate loadingDelegate,
+      PickType pickType = PickType.all,
+      BadgeDelegate badgeDelegate = const DefaultBadgeDelegate(),
+      List<AssetPathEntity> photoPathList,
+      List<AssetEntity> pickedAssetList,
+      Widget cancelWidget,
+      Function onAssetsSelected,
+      Widget subtitleWidgetArrow,
+      Widget managePhotosWidget,
+      Widget downloadingIcloudWidget,
+      Function onAssetsVideoLimit,
+      Function onAssetsImageLimit,
+      Function onExit,
+      bool exitOnSelected = false}) {
     assert(provider != null, "provider must be not null");
     assert(context != null, "context must be not null");
     assert(pickType != null, "pickType must be not null");
@@ -142,19 +141,20 @@ class PhotoPickerCallback {
         pickedAssetList,
         onAssetsSelected,
         onAssetsVideoLimit,
-        onAssetsImageLimit);
+        onAssetsImageLimit,
+        exitOnSelected);
   }
 
   void _pickAsset(
-    BuildContext context,
-    Options options,
-    I18nProvider provider,
-    List<AssetPathEntity> photoList,
-    List<AssetEntity> pickedAssetList,
-    Function onAssetsSelected,
-    Function onAssetsVideoLimit,
-    Function onAssetsImageLimit,
-  ) async {
+      BuildContext context,
+      Options options,
+      I18nProvider provider,
+      List<AssetPathEntity> photoList,
+      List<AssetEntity> pickedAssetList,
+      Function onAssetsSelected,
+      Function onAssetsVideoLimit,
+      Function onAssetsImageLimit,
+      bool exitOnSelected) async {
     var requestPermission = await PhotoManager.requestPermission();
     if (requestPermission != true) {
       var result = await showDialog(
@@ -177,19 +177,20 @@ class PhotoPickerCallback {
         pickedAssetList,
         onAssetsSelected,
         onAssetsVideoLimit,
-        onAssetsImageLimit);
+        onAssetsImageLimit,
+        exitOnSelected);
   }
 
   void _openGalleryContentPage(
-    BuildContext context,
-    Options options,
-    I18nProvider provider,
-    List<AssetPathEntity> photoList,
-    List<AssetEntity> pickedAssetList,
-    Function onAssetsSelected,
-    Function onAssetsVideoLimit,
-    Function onAssetsImageLimit,
-  ) {
+      BuildContext context,
+      Options options,
+      I18nProvider provider,
+      List<AssetPathEntity> photoList,
+      List<AssetEntity> pickedAssetList,
+      Function onAssetsSelected,
+      Function onAssetsVideoLimit,
+      Function onAssetsImageLimit,
+      bool exitOnSelected) {
     Navigator.of(context, rootNavigator: true).push(
       MaterialPageRoute(
         builder: (ctx) => PhotoApp(
@@ -200,6 +201,7 @@ class PhotoPickerCallback {
           onAssetsSelected: onAssetsSelected,
           onAssetsImageLimit: onAssetsImageLimit,
           onAssetsVideoLimit: onAssetsVideoLimit,
+          exitOnselected: exitOnSelected,
         ),
       ),
     );

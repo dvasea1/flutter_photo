@@ -13,13 +13,18 @@ class PhotoApp extends StatelessWidget {
   final Function onAssetsSelected;
   final Function onAssetsVideoLimit;
   final Function onAssetsImageLimit;
+  final bool exitOnselected;
 
-  const PhotoApp({Key key,
-    this.options,
-    this.provider,
-    this.photoList,
-    this.pickedAssetList,
-    this.onAssetsSelected, this.onAssetsVideoLimit, this.onAssetsImageLimit})
+  const PhotoApp(
+      {Key key,
+      this.options,
+      this.provider,
+      this.photoList,
+      this.pickedAssetList,
+      this.onAssetsSelected,
+      this.onAssetsVideoLimit,
+      this.onAssetsImageLimit,
+      this.exitOnselected = false})
       : super(key: key);
 
   @override
@@ -32,11 +37,15 @@ class PhotoApp extends StatelessWidget {
         onClose: (List<AssetEntity> value) {
           if (onAssetsSelected == null)
             Navigator.pop(context, value);
-          else
+          else {
             onAssetsSelected(value);
+            if (exitOnselected) {
+              Navigator.pop(context);
+            }
+          }
         },
         onExit: () {
-          if (options.onExit != null){
+          if (options.onExit != null) {
             options.onExit();
           } else {
             Navigator.pop(context);
