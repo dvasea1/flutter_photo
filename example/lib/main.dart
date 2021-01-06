@@ -144,6 +144,14 @@ class _MyHomePageState extends State<MyHomePage> with LoadingDelegate {
         // the content item radio
         maxVideoSelected: 2,
         maxImageSelected: 1,
+        onAssetsImageLimit: (){
+          debugPrint("limit images");
+        },
+
+        onAssetsVideoLimit: () {
+          debugPrint("video images");
+        },
+
         // max picker image count
         // provider: I18nProvider.english,
         provider: I18nProvider.english,
@@ -197,8 +205,7 @@ class _MyHomePageState extends State<MyHomePage> with LoadingDelegate {
             Navigator.push(context,
                 MaterialPageRoute(builder: (_) => PreviewPage(list: preview)));
           }
-        },
-        onAssetsVideoLimit: () {});
+        });
   }
 
   void routePage(Widget widget) {

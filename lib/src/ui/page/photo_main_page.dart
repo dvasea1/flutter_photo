@@ -325,19 +325,40 @@ class _PhotoMainPageState extends State<PhotoMainPage>
     widget.onClose(selectedList);
   }
 
-  @override
-  bool isUpperLimit() {
-    //  debugPrint("isUpperLimit selectedImagesCount ${selectedImagesCount}");
-    // debugPrint("isUpperLimit selectedVideosCount ${selectedVideosCount}");
 
-    var resultImage = selectedImagesCount == options.maxImageSelected;
-    var resultVideo = selectedVideosCount == options.maxVideoSelected;
+  @override
+  bool isUpperLimitImages() {
+    var resultImage = selectedImagesCount >= options.maxImageSelected;
+    if (resultImage) {
+      widget.onLimitImages();
+    }
+    return resultImage;
+  }
+
+  @override
+  bool isUpperLimitVideo() {
+    var resultVideo = selectedVideosCount >= options.maxVideoSelected;
+    if(resultVideo){
+      widget.onLimitVideo();
+    }
+    return resultVideo;
+  }
+
+
+/*  @override
+  bool isUpperLimit() {
+      debugPrint(" selectedImagesCount ${selectedImagesCount} options.maxImageSelected ${options.maxImageSelected}");
+     debugPrint(" selectedVideosCount ${selectedVideosCount} options.maxVideoSelected ${options.maxVideoSelected}");
+
+    var resultImage = selectedImagesCount >= options.maxImageSelected;
+    var resultVideo = selectedVideosCount >= options.maxVideoSelected;
 
     bool limit = false;
 
     debugPrint("resultImage $resultImage resultVideo $resultVideo");
 
-    if (resultImage && resultVideo) {
+
+    if (resultImage || resultVideo) {
       debugPrint("limit image");
       //_showTip(i18nProvider.getMaxTipText(options));
       limit = true;
@@ -347,15 +368,15 @@ class _PhotoMainPageState extends State<PhotoMainPage>
         widget.onLimitVideo();
       }
     }
-    /* else if(resultVideo && !resultImage){
+    *//* else if(resultVideo && !resultImage){
       debugPrint("limit video");
       _showTip(i18nProvider.getMaxTipText(options));
     limit = true;
-    }*/
+    }*//*
     else {}
 
     return limit;
-  }
+  }*/
 
   void sure() async {
     if (Platform.isIOS) {
@@ -800,4 +821,5 @@ class _PhotoMainPageState extends State<PhotoMainPage>
     // Not deleted
     _onGalleryChange(this.currentPath);
   }
+
 }

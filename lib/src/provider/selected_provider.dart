@@ -28,13 +28,17 @@ abstract class SelectedProvider {
     return selectedList.indexOf(entity);
   }
 
-  bool isUpperLimit();
+  bool isUpperLimitVideo();
+  bool isUpperLimitImages();
 
   bool addSelectEntity(AssetEntity entity) {
     if (containsEntity(entity)) {
       return false;
     }
-    if (isUpperLimit() == true) {
+    if (entity.type == AssetType.image && isUpperLimitImages() == true) {
+      return false;
+    }
+    if (entity.type == AssetType.video && isUpperLimitVideo() == true) {
       return false;
     }
     selectedList.add(entity);
