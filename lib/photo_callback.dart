@@ -93,7 +93,8 @@ class PhotoPickerCallback {
       Function onAssetsVideoLimit,
       Function onAssetsImageLimit,
       Function onExit,
-      bool exitOnSelected = false}) {
+      bool exitOnSelected = false,
+      bool allowSkip = true}) {
     assert(provider != null, "provider must be not null");
     assert(context != null, "context must be not null");
     assert(pickType != null, "pickType must be not null");
@@ -131,7 +132,8 @@ class PhotoPickerCallback {
         showManagePhotos: showManagePhotos,
         managePhotosWidget: managePhotosWidget,
         downloadingIcloudWidget: downloadingIcloudWidget,
-        onExit: onExit);
+        onExit: onExit,
+        allowSkip: allowSkip);
 
     PhotoPickerCallback()._pickAsset(
         context,

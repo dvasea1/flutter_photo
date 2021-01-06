@@ -49,6 +49,8 @@ class Options {
 
   final bool showManagePhotos;
 
+  final bool allowSkip;
+
   final Function onExit;
 
   const Options({
@@ -75,6 +77,7 @@ class Options {
     this.managePhotosWidget,
     this.downloadingIcloudWidget,
     this.onExit,
+    this.allowSkip,
   });
 }
 

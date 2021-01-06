@@ -14,7 +14,6 @@ import 'package:photo/src/provider/gallery_list_provider.dart';
 import 'package:photo/src/provider/i18n_provider.dart';
 import 'package:photo/src/provider/selected_provider.dart';
 import 'package:photo/src/ui/dialog/change_gallery_dialog.dart';
-import 'package:photo/src/ui/page/photo_preview_page.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 part './main/bottom_widget.dart';
@@ -246,9 +245,12 @@ class _PhotoMainPageState extends State<PhotoMainPage>
                       padding: EdgeInsets.symmetric(horizontal: 15),
                       child: Center(
                         child: Text(
-                          selectedTotalCount == 0
-                              ? i18nProvider.getSureTextEmpty(
-                                  options, selectedTotalCount)
+                          options.allowSkip
+                              ? selectedTotalCount == 0
+                                  ? i18nProvider.getSureTextEmpty(
+                                      options, selectedTotalCount)
+                                  : i18nProvider.getSureText(
+                                      options, selectedTotalCount)
                               : i18nProvider.getSureText(
                                   options, selectedTotalCount),
                           style: selectedTotalCount == 0
@@ -357,7 +359,7 @@ class _PhotoMainPageState extends State<PhotoMainPage>
 
   void sure() async {
     if (Platform.isIOS) {
-      if(selectedList.length > 0){
+      if (selectedList.length > 0) {
         showDialog(
           barrierDismissible: false,
           context: context,
@@ -369,17 +371,17 @@ class _PhotoMainPageState extends State<PhotoMainPage>
                   options.downloadingIcloudWidget != null
                       ? options.downloadingIcloudWidget
                       : Container(
-                    width: 100,
-                    height: 100,
-                    color: Colors.white,
-                    child: Center(
-                      child: Text(
-                        "Downloading from icloud",
-                        style: TextStyle(fontSize: 13),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  )
+                          width: 100,
+                          height: 100,
+                          color: Colors.white,
+                          child: Center(
+                            child: Text(
+                              "Downloading from icloud",
+                              style: TextStyle(fontSize: 13),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        )
                 ],
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -397,11 +399,10 @@ class _PhotoMainPageState extends State<PhotoMainPage>
           });
         });
       } else {
-        widget.onClose?.call(selectedList);
+        if (options.allowSkip) widget.onClose?.call(selectedList);
       }
-
     } else {
-      widget.onClose?.call(selectedList);
+      if (options.allowSkip) widget.onClose?.call(selectedList);
     }
   }
 
@@ -708,7 +709,6 @@ class _PhotoMainPageState extends State<PhotoMainPage>
       // _onPhotoRefresh();
     }
   }
-
 
   Widget _buildLoading() {
     return Center(
