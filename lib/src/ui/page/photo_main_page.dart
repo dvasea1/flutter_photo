@@ -423,7 +423,12 @@ class _PhotoMainPageState extends State<PhotoMainPage>
         if (options.allowSkip) widget.onClose?.call(selectedList);
       }
     } else {
-      if (options.allowSkip) widget.onClose?.call(selectedList);
+      if (selectedList.length > 0) {
+        widget.onClose?.call(selectedList);
+      } else {
+        if (options.allowSkip) widget.onClose?.call(selectedList);
+      }
+
     }
   }
 
