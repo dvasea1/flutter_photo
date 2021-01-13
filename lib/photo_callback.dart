@@ -157,7 +157,7 @@ class PhotoPickerCallback {
       Function onAssetsVideoLimit,
       Function onAssetsImageLimit,
       bool exitOnSelected) async {
-  /*  var requestPermission = await PhotoManager.requestPermission();
+    var requestPermission = await PhotoManager.requestPermission();
     if (requestPermission != true) {
       var result = await showDialog(
         context: context,
@@ -169,7 +169,7 @@ class PhotoPickerCallback {
         PhotoManager.openSetting();
       }
       return null;
-    }*/
+    }
 
     return _openGalleryContentPage(
         context,
