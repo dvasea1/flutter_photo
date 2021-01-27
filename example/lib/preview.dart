@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:photo/photo_callback.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 import './asset_image.dart';
 
 class PreviewPage extends StatelessWidget {
   final List<AssetEntity> list;
+  final PhotoPickerCallbackEvents event;
 
-  const PreviewPage({Key key, this.list = const []}) : super(key: key);
+  const PreviewPage({Key key, this.list = const [],this.event}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +36,10 @@ class PreviewPage extends StatelessWidget {
               width: 100,
             ),
             onTap: () {
-              Navigator.of(context).popUntil((route) => route.isFirst);
+              list.removeLast();
+              Navigator.pop(context);
+              event.onPickedAssetChanged(list);
+              // Navigator.of(context).popUntil((route) => route.isFirst);
             },
           )
         ],

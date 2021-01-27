@@ -118,7 +118,7 @@ class _MyHomePageState extends State<MyHomePage> with LoadingDelegate {
     var assetPathList = await PhotoManager.getImageAsset();
     _pickAsset(PickType.all, pathList: assetPathList);
   }
-
+  PhotoPickerCallbackEvents event;
   void _pickAsset(PickType type, {List<AssetPathEntity> pathList}) async {
     /// context is required, other params is optional.
     /// context is required, other params is optional.
@@ -143,11 +143,13 @@ class _MyHomePageState extends State<MyHomePage> with LoadingDelegate {
         itemRadio: 0.88,
         // the content item radio
         maxVideoSelected: 2,
-        maxImageSelected: 1,
+        maxImageSelected: 5,
         onAssetsImageLimit: (){
           debugPrint("limit images");
         },
-
+onInstanceEvents: (PhotoPickerCallbackEvents event){
+          this.event = event;
+},
         onAssetsVideoLimit: () {
           debugPrint("video images");
         },
@@ -203,7 +205,7 @@ class _MyHomePageState extends State<MyHomePage> with LoadingDelegate {
             List<AssetEntity> preview = [];
             preview.addAll(imgList);
             Navigator.push(context,
-                MaterialPageRoute(builder: (_) => PreviewPage(list: preview)));
+                MaterialPageRoute(builder: (_) => PreviewPage(list: preview,event: event,)));
           }
         });
   }

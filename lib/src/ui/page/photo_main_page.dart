@@ -16,6 +16,8 @@ import 'package:photo/src/provider/selected_provider.dart';
 import 'package:photo/src/ui/dialog/change_gallery_dialog.dart';
 import 'package:photo_manager/photo_manager.dart';
 
+import '../../../photo_callback.dart';
+
 part './main/bottom_widget.dart';
 
 part './main/image_item.dart';
@@ -27,6 +29,7 @@ class PhotoMainPage extends StatefulWidget {
   final VoidCallback onExit;
   final VoidCallback onLimitVideo;
   final VoidCallback onLimitImages;
+  final Function onInstanceEvents;
 
   const PhotoMainPage(
       {Key key,
@@ -35,7 +38,7 @@ class PhotoMainPage extends StatefulWidget {
       this.photoList,
       this.onExit,
       this.onLimitVideo,
-      this.onLimitImages})
+      this.onLimitImages,this.onInstanceEvents})
       : super(key: key);
 
   @override
@@ -43,7 +46,7 @@ class PhotoMainPage extends StatefulWidget {
 }
 
 class _PhotoMainPageState extends State<PhotoMainPage>
-    with SelectedProvider, GalleryListProvider {
+    with SelectedProvider, GalleryListProvider ,  PhotoPickerCallbackEvents {
   Options get options => widget.options;
 
   I18nProvider get i18nProvider => PhotoPickerProvider.of(context).provider;
@@ -430,6 +433,7 @@ class _PhotoMainPageState extends State<PhotoMainPage>
       }
 
     }
+    widget.onInstanceEvents(this);
   }
 
   exitFiles() {
@@ -825,6 +829,12 @@ class _PhotoMainPageState extends State<PhotoMainPage>
     }
     // Not deleted
     _onGalleryChange(this.currentPath);
+  }
+
+  @override
+  onPickedAssetChanged(List<AssetEntity> pickedAssetList) {
+    selectedList = pickedAssetList;
+    _refreshList();
   }
 
 }

@@ -18,6 +18,9 @@ export 'package:photo/src/delegate/sort_delegate.dart';
 export 'package:photo/src/entity/options.dart' show PickType;
 export 'package:photo/src/provider/i18n_provider.dart'
     show I18NCustomProvider, I18nProvider, CNProvider, ENProvider;
+abstract class PhotoPickerCallbackEvents {
+onPickedAssetChanged(List<AssetEntity> pickedAssetList);
+}
 
 class PhotoPickerCallback {
   static PhotoPickerCallback _instance;
@@ -94,7 +97,7 @@ class PhotoPickerCallback {
       Function onAssetsImageLimit,
       Function onExit,
       bool exitOnSelected = false,
-      bool allowSkip = true}) {
+      bool allowSkip = true,  Function onInstanceEvents,}) {
     assert(provider != null, "provider must be not null");
     assert(context != null, "context must be not null");
     assert(pickType != null, "pickType must be not null");
@@ -133,7 +136,7 @@ class PhotoPickerCallback {
         managePhotosWidget: managePhotosWidget,
         downloadingIcloudWidget: downloadingIcloudWidget,
         onExit: onExit,
-        allowSkip: allowSkip);
+        allowSkip: allowSkip,onInstanceEvents: onInstanceEvents);
 
     PhotoPickerCallback()._pickAsset(
         context,

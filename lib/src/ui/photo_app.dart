@@ -5,6 +5,8 @@ import 'package:photo/src/provider/i18n_provider.dart';
 import 'package:photo/src/ui/page/photo_main_page.dart';
 import 'package:photo_manager/photo_manager.dart';
 
+import '../../photo_callback.dart';
+
 class PhotoApp extends StatelessWidget {
   final Options options;
   final I18nProvider provider;
@@ -59,6 +61,7 @@ class PhotoApp extends StatelessWidget {
         },
         options: options,
         photoList: photoList,
+        onInstanceEvents: options.onInstanceEvents,
       ),
     );
 
