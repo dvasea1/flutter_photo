@@ -121,6 +121,7 @@ class _PhotoMainPageState extends State<PhotoMainPage>
         widget.onClose?.call(selectedList);
       });
     }
+    widget.onInstanceEvents(this);
   }
 
   @override
@@ -437,7 +438,7 @@ class _PhotoMainPageState extends State<PhotoMainPage>
         if (options.allowSkip) widget.onClose?.call(selectedList);
       }
     }
-    widget.onInstanceEvents(this);
+
   }
 
   exitFiles() {
