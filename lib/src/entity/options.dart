@@ -55,6 +55,8 @@ class Options {
 
   final Function onInstanceEvents;
 
+  final bool onGoNextOnStart;
+
   const Options({
     this.rowCount,
     this.maxImageSelected,
@@ -80,7 +82,8 @@ class Options {
     this.downloadingIcloudWidget,
     this.onExit,
     this.allowSkip,
-    this.onInstanceEvents
+    this.onInstanceEvents,
+    this.onGoNextOnStart
   });
 }
 

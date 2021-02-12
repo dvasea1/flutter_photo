@@ -191,7 +191,8 @@ onInstanceEvents: (PhotoPickerCallbackEvents event){
         onAssetsSelected: (List<AssetEntity> imgList) async {
           debugPrint("here waiting $imgList");
           if (imgList == null || imgList.isEmpty) {
-            showToast("No pick item.");
+            Navigator.push(context,
+                MaterialPageRoute(builder: (_) => PreviewPage(list: [],event: event,)));
           } else {
             List<String> r = [];
             for (var e in imgList) {
@@ -207,7 +208,7 @@ onInstanceEvents: (PhotoPickerCallbackEvents event){
             Navigator.push(context,
                 MaterialPageRoute(builder: (_) => PreviewPage(list: preview,event: event,)));
           }
-        });
+        },onGoNextOnStart: true);
   }
 
   void routePage(Widget widget) {

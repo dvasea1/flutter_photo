@@ -38,7 +38,8 @@ class PhotoMainPage extends StatefulWidget {
       this.photoList,
       this.onExit,
       this.onLimitVideo,
-      this.onLimitImages,this.onInstanceEvents})
+      this.onLimitImages,
+      this.onInstanceEvents})
       : super(key: key);
 
   @override
@@ -46,7 +47,7 @@ class PhotoMainPage extends StatefulWidget {
 }
 
 class _PhotoMainPageState extends State<PhotoMainPage>
-    with SelectedProvider, GalleryListProvider ,  PhotoPickerCallbackEvents {
+    with SelectedProvider, GalleryListProvider, PhotoPickerCallbackEvents {
   Options get options => widget.options;
 
   I18nProvider get i18nProvider => PhotoPickerProvider.of(context).provider;
@@ -114,6 +115,12 @@ class _PhotoMainPageState extends State<PhotoMainPage>
     debugPrint("_currentPath ${_currentPath.isAll}");
 
     _currentPath.isAll = true;
+    debugPrint("options.onGoNextOnStart ${options.onGoNextOnStart}");
+    if (options.onGoNextOnStart) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        widget.onClose?.call(selectedList);
+      });
+    }
   }
 
   @override
@@ -328,7 +335,6 @@ class _PhotoMainPageState extends State<PhotoMainPage>
     widget.onClose(selectedList);
   }
 
-
   @override
   bool isUpperLimitImages() {
     var resultImage = selectedImagesCount >= options.maxImageSelected;
@@ -341,12 +347,11 @@ class _PhotoMainPageState extends State<PhotoMainPage>
   @override
   bool isUpperLimitVideo() {
     var resultVideo = selectedVideosCount >= options.maxVideoSelected;
-    if(resultVideo){
+    if (resultVideo) {
       widget.onLimitVideo();
     }
     return resultVideo;
   }
-
 
 /*  @override
   bool isUpperLimit() {
@@ -371,11 +376,11 @@ class _PhotoMainPageState extends State<PhotoMainPage>
         widget.onLimitVideo();
       }
     }
-    *//* else if(resultVideo && !resultImage){
+    */ /* else if(resultVideo && !resultImage){
       debugPrint("limit video");
       _showTip(i18nProvider.getMaxTipText(options));
     limit = true;
-    }*//*
+    }*/ /*
     else {}
 
     return limit;
@@ -431,7 +436,6 @@ class _PhotoMainPageState extends State<PhotoMainPage>
       } else {
         if (options.allowSkip) widget.onClose?.call(selectedList);
       }
-
     }
     widget.onInstanceEvents(this);
   }
@@ -836,5 +840,4 @@ class _PhotoMainPageState extends State<PhotoMainPage>
     selectedList = pickedAssetList;
     _refreshList();
   }
-
 }
