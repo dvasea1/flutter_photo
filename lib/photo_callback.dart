@@ -21,6 +21,7 @@ export 'package:photo/src/provider/i18n_provider.dart'
 
 abstract class PhotoPickerCallbackEvents {
   onPickedAssetChanged(List<AssetEntity> pickedAssetList);
+  onExit();
 }
 
 class PhotoPickerCallback {

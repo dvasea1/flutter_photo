@@ -840,4 +840,9 @@ class _PhotoMainPageState extends State<PhotoMainPage>
     selectedList = pickedAssetList;
     _refreshList();
   }
+
+  @override
+  onExit() {
+    Navigator.pop(context);
+  }
 }
