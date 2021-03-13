@@ -3,6 +3,7 @@ import 'dart:io' show Platform;
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:photo/src/delegate/badge_delegate.dart';
 import 'package:photo/src/delegate/loading_delegate.dart';
 import 'package:photo/src/engine/lru_cache.dart';
@@ -534,7 +535,7 @@ class _PhotoMainPageState extends State<PhotoMainPage>
 
     final noMore = assetProvider.noMore;
 
-    final count = assetProvider.count + (noMore ? 0 : 1);
+    final count = assetProvider.count + (noMore ? 0 : 1) + 1;
 
     return Stack(
       children: <Widget>[
@@ -617,7 +618,19 @@ class _PhotoMainPageState extends State<PhotoMainPage>
       return _buildNoData();
     }
 
-    var data = list[index];
+    if(index == 0){
+      return Material(
+        color: Colors.transparent,
+        child: InkWell(
+          child: Container(child: options.cameraWidget,),
+          onTap: (){
+            ImagePicker().getImage(source: ImageSource.camera);
+          },
+        ),
+      );
+    }
+
+    var data = list[index-1];
     var currentSelected = containsEntity(data);
     return RepaintBoundary(
       child: GestureDetector(

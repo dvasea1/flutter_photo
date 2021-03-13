@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:oktoast/oktoast.dart';
 import 'package:photo/photo.dart';
 import 'package:photo/photo_callback.dart';
 import 'package:photo_manager/photo_manager.dart';
@@ -15,14 +14,12 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return OKToast(
-      child: MaterialApp(
-        title: 'Pick Image Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.lime,
-        ),
-        home: MyHomePage(title: 'Pick Image Demo'),
+    return MaterialApp(
+      title: 'Pick Image Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.lime,
       ),
+      home: MyHomePage(title: 'Pick Image Demo'),
     );
   }
 }
@@ -143,6 +140,7 @@ class _MyHomePageState extends State<MyHomePage> with LoadingDelegate {
         itemRadio: 0.88,
         // the content item radio
         maxVideoSelected: 2,
+        cameraWidget: Container(color: Colors.green,),
         maxImageSelected: 5,
         onAssetsImageLimit: (){
           debugPrint("limit images");

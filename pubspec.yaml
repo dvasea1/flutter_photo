@@ -13,6 +13,8 @@ dependencies:
 
   #photo_manager: ^0.5.8
   photo_manager : ^0.6.0-dev.8
+  image_picker: 0.6.7+22
+    #file_picker: 2.1.0
     #git:
       #url: https://github.com/CaiJingLong/flutter_photo_manager.git
       #ref: 43dd81ee5cb49c6b7106555cffcf2e9e66e7629a
