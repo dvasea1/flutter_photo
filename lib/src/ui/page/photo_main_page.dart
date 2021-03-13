@@ -439,7 +439,6 @@ class _PhotoMainPageState extends State<PhotoMainPage>
         if (options.allowSkip) widget.onClose?.call(selectedList);
       }
     }
-
   }
 
   exitFiles() {
@@ -618,19 +617,26 @@ class _PhotoMainPageState extends State<PhotoMainPage>
       return _buildNoData();
     }
 
-    if(index == 0){
+    if (index == 0) {
       return Material(
         color: Colors.transparent,
         child: InkWell(
-          child: Container(child: options.cameraWidget,),
-          onTap: (){
-            ImagePicker().getImage(source: ImageSource.camera);
+          child: Container(
+            child: options.cameraWidget,
+          ),
+          onTap: () async {
+            PickedFile pickedFile =
+                await ImagePicker().getImage(source: ImageSource.camera);
+            if (options.onCameraFile != null) {
+              options.onCameraFile(pickedFile.path);
+              widget.onExit?.call();
+            }
           },
         ),
       );
     }
 
-    var data = list[index-1];
+    var data = list[index - 1];
     var currentSelected = containsEntity(data);
     return RepaintBoundary(
       child: GestureDetector(

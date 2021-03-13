@@ -152,6 +152,10 @@ onInstanceEvents: (PhotoPickerCallbackEvents event){
           debugPrint("video images");
         },
 
+        onCameraFile: (file){
+
+        },
+
         // max picker image count
         // provider: I18nProvider.english,
         provider: I18nProvider.english,

@@ -96,6 +96,7 @@ class PhotoPickerCallback {
       Widget managePhotosWidget,
       Widget downloadingIcloudWidget,
       Widget cameraWidget,
+        Function onCameraFile,
       Function onAssetsVideoLimit,
       Function onAssetsImageLimit,
       Function onExit,
@@ -143,6 +144,7 @@ class PhotoPickerCallback {
         onExit: onExit,
         allowSkip: allowSkip,
         onInstanceEvents: onInstanceEvents,
+        onCameraFile: onCameraFile,
         onGoNextOnStart: onGoNextOnStart,cameraWidget: cameraWidget);
 
     PhotoPickerCallback()._pickAsset(

@@ -46,7 +46,10 @@ class Options {
   final Widget managePhotosWidget;
 
   final Widget downloadingIcloudWidget;
+
   final Widget cameraWidget;
+
+  final Function onCameraFile;
 
   final bool showManagePhotos;
 
@@ -85,7 +88,8 @@ class Options {
     this.allowSkip,
     this.onInstanceEvents,
     this.cameraWidget,
-    this.onGoNextOnStart
+    this.onGoNextOnStart,
+    this.onCameraFile
   });
 }
 
