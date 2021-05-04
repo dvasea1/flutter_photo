@@ -3,7 +3,6 @@ import 'dart:io' show Platform;
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:photo/src/delegate/badge_delegate.dart';
 import 'package:photo/src/delegate/loading_delegate.dart';
 import 'package:photo/src/engine/lru_cache.dart';
@@ -625,12 +624,12 @@ class _PhotoMainPageState extends State<PhotoMainPage>
             child: options.cameraWidget,
           ),
           onTap: () async {
-            PickedFile pickedFile =
+            /*PickedFile pickedFile =
                 await ImagePicker().getImage(source: ImageSource.camera);
             if (options.onCameraFile != null) {
               options.onCameraFile(pickedFile.path);
               widget.onExit?.call();
-            }
+            }*/
           },
         ),
       );
