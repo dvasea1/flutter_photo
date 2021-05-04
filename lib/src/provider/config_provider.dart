@@ -22,8 +22,8 @@ class PhotoPickerProvider extends InheritedWidget {
     return true;
   }
 
-  static PhotoPickerProvider of(BuildContext context) =>
-      context.inheritFromWidgetOfExactType(PhotoPickerProvider);
+  static PhotoPickerProvider of(BuildContext context) => context.dependOnInheritedWidgetOfExactType<PhotoPickerProvider>();
+      
 
   static AssetProvider assetProviderOf(BuildContext context) =>
       of(context).assetProvider;
