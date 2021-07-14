@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart' hide CheckboxListTile;
 import 'package:photo/src/entity/options.dart';
 import 'package:photo/src/provider/i18n_provider.dart';
-import 'package:photo/src/ui/widget/check_tile_copy.dart';
 
 abstract class CheckBoxBuilderDelegate {
   Widget buildCheckBox(
@@ -34,16 +33,16 @@ class DefaultCheckBoxBuilderDelegate extends CheckBoxBuilderDelegate {
   ) {
     return Theme(
       data: Theme.of(context).copyWith(unselectedWidgetColor: unselectedColor),
-      child: CheckboxListTile(
+      child: Checkbox(
         value: checked,
         onChanged: (bool check) {},
         activeColor: activeColor,
         checkColor: checkColor,
-        title: Text(
+      /*  title: Text(
           i18nProvider.getSelectedOptionsText(options),
           textAlign: TextAlign.end,
           style: TextStyle(color: options.textColor),
-        ),
+        ),*/
       ),
     );
   }
